@@ -65,7 +65,6 @@ public class OcrFragment extends Fragment {
 
     interface OcrFragmentListener{
         void onOcrSuccess(ArrayList<String> textList); //인식된 text 넘기기 위해
-
     }
     public void setOcrFragmentListener(OcrFragmentListener ocrFragmentListener){
         this.ocrFragmentListener = ocrFragmentListener;
@@ -159,15 +158,10 @@ public class OcrFragment extends Fragment {
                     try {
                         cameraProviderFuture.get().shutdown();
                     } catch (ExecutionException e) {
-                        //e.printStackTrace();
-                        //Toast.makeText(requireContext(), "영수증을 다시 인식시켜주세요", Toast.LENGTH_SHORT).show();
-                        startCam();
+                        e.printStackTrace();
                     } catch (InterruptedException e) {
-                        //e.printStackTrace();
-                        //Toast.makeText(requireContext(), "영수증을 다시 인식시켜주세요", Toast.LENGTH_SHORT).show();
-                        startCam();
+                        e.printStackTrace();
                     }
-
 
                     @SuppressLint("UnsafeOptInUsageError")
 
@@ -218,16 +212,24 @@ public class OcrFragment extends Fragment {
                                     //인식된 텍스트를 text 필드에 저장
 
                                     Log.d("result", task.getResult().getAsJsonArray().get(0).toString());
+                                    if (task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation") != null) {
+                                        JsonObject annotation = task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation").getAsJsonObject();
 
-                                    JsonObject annotation = task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation").getAsJsonObject();
-                                    System.out.format("%nComplete annotation:%n");
-                                    System.out.format("%s%n", annotation.get("text").getAsString());
+                                        System.out.format("%nComplete annotation:%n");
+                                        System.out.format("%s%n", annotation.get("text").getAsString());
 
-                                    Toast.makeText(requireContext(), annotation.get("text").getAsString(), Toast.LENGTH_LONG)
-                                            .show();
+                                        getTextList(annotation);
+                                        Log.d("OCRTextList", getTextList(annotation).toString());
 
-                                    getTextList(annotation);
-                                    Log.d("OCRTextList", getTextList(annotation).toString());
+                                        ocrFragmentListener.onOcrSuccess(checkIngredients(getTextList(annotation)));
+
+                                        Log.d("IngredientList", checkIngredients(getTextList(annotation)).toString());
+                                        Toast.makeText(requireContext(), checkIngredients(getTextList(annotation)).toString(), Toast.LENGTH_LONG)
+                                                .show();
+                                    } else {
+                                        ocrFragmentListener.onOcrSuccess(null);
+
+                                    }
                                 }
                             }
                         });
@@ -338,4 +340,27 @@ public class OcrFragment extends Fragment {
         }
         return textList;
     }
+
+    private ArrayList<String> checkIngredients(ArrayList<String> textList) {
+        ArrayList<String> ingredientList = new ArrayList<>();
+
+        for(String ingredient : textList) {
+            checkIngredient(ingredientList,ingredient);
+        }
+        return ingredientList;
+    }
+
+    private void checkIngredient(ArrayList<String> checks, String ingredient){
+        for(int j=0; j<ingredient.length(); j++) {
+            for(int i=j+1; i<=ingredient.length(); i++){
+                ingredient.substring(j,i);
+                if(ingredients.containsKey(ingredient.substring(j,i))){
+                    checks.add(ingredient.substring(j,i));
+                    checkIngredient(checks, ingredient.substring(i));
+                    return;
+                }
+            }
+        }
+    }
+
 }

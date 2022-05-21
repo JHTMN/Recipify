@@ -19,8 +19,7 @@ import com.syeon.ocr.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-        //OcrFragment.FragmentOcrListener {
+public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFragmentListener {
 
     private ActivityMainBinding activityMainBinding;
     public final int REQUEST_CODE_PERMISSIONS = 100; //카메라 권한설정
@@ -35,10 +34,9 @@ public class MainActivity extends AppCompatActivity {
         View view = activityMainBinding.getRoot();
         setContentView(view);
 
-
         //카메라 권한 설정
         if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
-            startMain(); //권한설정돼있다면 OCR 프래그먼트 열기
+            startOCRbtn(); //권한설정돼있다면 OCR 프래그먼트 열기
         }else {
             requestPermissions(new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_PERMISSIONS);
         }
@@ -50,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             //권한 있다면 시작
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startMain();
+                startOCRbtn();
             } else { //권한 없을 경우
                 Toast.makeText(this,
                         "Permissions not granted by the user.",
@@ -65,8 +63,19 @@ public class MainActivity extends AppCompatActivity {
     public void onOcrSuccess(ArrayList<String> textList) {
         Fragment frag = (OcrFragment) getSupportFragmentManager().findFragmentByTag("OcrFragment");
         if (frag != null) {
-            getSupportFragmentManager().beginTransaction().remove(frag).commit();
+            if(textList == null) {
+                Toast.makeText(getApplicationContext(), "영수증을 다시 인식시켜주세요", Toast.LENGTH_SHORT).show();
+                getSupportFragmentManager().beginTransaction().remove(frag).commit();
+                activityMainBinding.OCRBtn.setVisibility(View.GONE);
+                OcrFragment ocrFragment = OcrFragment.newInstance();
+                ocrFragment.setOcrFragmentListener(MainActivity.this::onOcrSuccess);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
+                        .commit();
+            }
+
         }
+
 
     }
 
@@ -76,52 +85,18 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    private void startMain(){
+    private void startOCRbtn(){
         activityMainBinding.OCRBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OcrFragment myRefrigeratorFragment = OcrFragment.newInstance();
+                activityMainBinding.OCRBtn.setVisibility(View.GONE);
+                OcrFragment ocrFragment = OcrFragment.newInstance();
+                ocrFragment.setOcrFragmentListener(MainActivity.this::onOcrSuccess);
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.main_container, myRefrigeratorFragment)
+                fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
             }
         });
     }
 
-
-    /*
-    private void startMain(){
-        activityMainBinding.mainBottomMenu.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if(item.getItemId() == R.id.my_refrigerator){
-                    MyRefrigeratorFragment myRefrigeratorFragment = MyRefrigeratorFragment.newInstance();
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.main_container, myRefrigeratorFragment)
-                            .commit();
-                    return true;
-                } else if(item.getItemId() == R.id.recommend) {
-                    RecommendFragment recommendFragment = RecommendFragment.newInstance();
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.main_container, recommendFragment).commit();
-                    return true;
-                } else if (item.getItemId() == R.id.recipes_search) {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.main_container, RecipesSearchFragment.newInstance())
-                            .commit();
-                    return true;
-                } else if(item.getItemId() == R.id.my_page) {
-                    MyPageFragment myPageFragment = MyPageFragment.newInstance();
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.main_container, myPageFragment).commit();
-                    return true;
-                } else {
-                    return false;
-                }
-
-            }
-        });
-    }
-
-     */
 }

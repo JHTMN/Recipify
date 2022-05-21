@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         ></androidx.camera.view.PreviewView>
 
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/click_btn"
         android:textSize="20dp"
