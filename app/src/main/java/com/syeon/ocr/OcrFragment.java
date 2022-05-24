@@ -61,10 +61,10 @@ public class OcrFragment extends Fragment {
     //Functions
     private FirebaseFunctions mFunctions;
 
-    HashMap<String, Object> ingredients;
+    HashMap<String, Object> ingredientMap;
 
     interface OcrFragmentListener{
-        void onOcrSuccess(ArrayList<String> textList); //인식된 text 넘기기 위해
+        void ocrSuccess(ArrayList<String> textList); //인식된 식재료를 넘기기 위해
     }
     public void setOcrFragmentListener(OcrFragmentListener ocrFragmentListener){
         this.ocrFragmentListener = ocrFragmentListener;
@@ -90,11 +90,11 @@ public class OcrFragment extends Fragment {
         cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
                 // 1.Cloud Functions 인스턴스 초기화
         mFunctions = FirebaseFunctions.getInstance();
-        ingredients = new HashMap<String, Object>();
-        ingredients.put("떡", 0);
-        ingredients.put("바나나", 1);
-        ingredients.put("우유", 2);
-        ingredients.put("햄", 3);
+        ingredientMap = new HashMap<String, Object>();
+        ingredientMap.put("떡", 0);
+        ingredientMap.put("바나나", 1);
+        ingredientMap.put("우유", 2);
+        ingredientMap.put("햄", 3);
 
     }
 
@@ -113,6 +113,7 @@ public class OcrFragment extends Fragment {
         fragmentOcrBinding.clickBtn.setOnClickListener(onClickListener);
     }
 
+    //카메라 시작하기
     private void startCam(){
         cameraProviderFuture.addListener(new Runnable() {
             @Override
@@ -122,7 +123,6 @@ public class OcrFragment extends Fragment {
                             .setTargetRotation(getView().getDisplay().getRotation())
                             .build();
                     ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-
                     Preview preview = new Preview.Builder()
                             .build();
                     CameraSelector cameraSelector = new CameraSelector.Builder()
@@ -140,13 +140,11 @@ public class OcrFragment extends Fragment {
         }, cameraExecutor);
     }
 
-
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             onclick();
         }
     };
-
 
     private void onclick() {
         imageCapture.takePicture(cameraExecutor,
@@ -174,8 +172,7 @@ public class OcrFragment extends Fragment {
                     byte[] imageBytes = byteArrayOutputStream.toByteArray();
                     String base64encoded = Base64.encodeToString(imageBytes, Base64.NO_WRAP);
 
-                    // 3. JSON 요청
-                    // Create json request to cloud vision
+                    // 3. cloud vision api 사용하기 위해 JSON reguest 생성
                     JsonObject request = new JsonObject();
                     // Add image to request
                     JsonObject jsonImage = new JsonObject();
@@ -190,10 +187,10 @@ public class OcrFragment extends Fragment {
                     features.add(feature);
                     request.add("features", features);
 
-                    // 필요할 경우 언어 힌트를 제공하여 언어 감지 지원
+                    //언어 감지
                     JsonObject imageContext = new JsonObject();
                     JsonArray languageHints = new JsonArray();
-                    languageHints.add("ko"); //한국어!
+                    languageHints.add("ko"); //한국어
                     imageContext.add("languageHints", languageHints);
                     request.add("imageContext", imageContext);
 
@@ -215,19 +212,13 @@ public class OcrFragment extends Fragment {
                                     if (task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation") != null) {
                                         JsonObject annotation = task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation").getAsJsonObject();
 
-                                        System.out.format("%nComplete annotation:%n");
-                                        System.out.format("%s%n", annotation.get("text").getAsString());
-
-                                        getTextList(annotation);
-                                        Log.d("OCRTextList", getTextList(annotation).toString());
-
-                                        ocrFragmentListener.onOcrSuccess(checkIngredients(getTextList(annotation)));
+                                        ocrFragmentListener.ocrSuccess(checkIngredients(getTextList(annotation)));
 
                                         Log.d("IngredientList", checkIngredients(getTextList(annotation)).toString());
                                         Toast.makeText(requireContext(), checkIngredients(getTextList(annotation)).toString(), Toast.LENGTH_LONG)
                                                 .show();
                                     } else {
-                                        ocrFragmentListener.onOcrSuccess(null);
+                                        ocrFragmentListener.ocrSuccess(null);
 
                                     }
                                 }
@@ -306,36 +297,18 @@ public class OcrFragment extends Fragment {
                         StringBuilder wordText = new StringBuilder();
                         for (JsonElement symbol : word.getAsJsonObject().get("symbols").getAsJsonArray()) {
                             wordText.append(symbol.getAsJsonObject().get("text").getAsString());
-                            System.out.format("Symbol text: %s (confidence: %f)%n",
-                                    symbol.getAsJsonObject().get("text").getAsString(),
-                                    symbol.getAsJsonObject().get("confidence").getAsFloat());
                         }
-                        System.out.format(
-                                "Word text: %s (confidence: %f)%n%n",
-                                wordText.toString(),
-                                word.getAsJsonObject().get("confidence").getAsFloat()
-                        );
-                        System.out.format("Word bounding box: %s%n",
-                                word.getAsJsonObject().get("boundingBox")
-                        );
                         paraText.append(wordText.toString()).append(" ");
-
                         textList.add(wordText.toString());
                         int textSize = textList.size();
                         String paymentText = textList.get(textSize - 2);
                         String priceText = paymentText + textList.get(textSize - 1);
-                        if (priceText.equals("결제금액")) {
-                            return textList;
-                        }
+                        if (priceText.equals("결제금액")) { return textList; }
                     }
-                    System.out.format("%nParagraph:%n%s%n", paraText);
-                    System.out.format("Paragraph bounding box: %s%n", para.getAsJsonObject().get("boundingBox"));
-                    System.out.format("Paragraph Confidence: %f%n", para.getAsJsonObject().get("confidence").getAsFloat());
                     blockText.append(paraText);
                     Log.d("OCR", paraText.toString());
                 }
                 pageText.append(blockText);
-
             }
         }
         return textList;
@@ -343,20 +316,20 @@ public class OcrFragment extends Fragment {
 
     private ArrayList<String> checkIngredients(ArrayList<String> textList) {
         ArrayList<String> ingredientList = new ArrayList<>();
-
         for(String ingredient : textList) {
             checkIngredient(ingredientList,ingredient);
         }
         return ingredientList;
     }
 
-    private void checkIngredient(ArrayList<String> checks, String ingredient){
+    //영수증 text와 식재료값 비교
+    private void checkIngredient(ArrayList<String> checkList, String ingredient){
         for(int j=0; j<ingredient.length(); j++) {
             for(int i=j+1; i<=ingredient.length(); i++){
                 ingredient.substring(j,i);
-                if(ingredients.containsKey(ingredient.substring(j,i))){
-                    checks.add(ingredient.substring(j,i));
-                    checkIngredient(checks, ingredient.substring(i));
+                if(ingredientMap.containsKey(ingredient.substring(j,i))){
+                    checkList.add(ingredient.substring(j,i));
+                    checkIngredient(checkList, ingredient.substring(i));
                     return;
                 }
             }

@@ -59,24 +59,26 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-
-    public void onOcrSuccess(ArrayList<String> textList) {
+    public void ocrSuccess(ArrayList<String> textList) {
         Fragment frag = (OcrFragment) getSupportFragmentManager().findFragmentByTag("OcrFragment");
         if (frag != null) {
-            if(textList == null) {
+            if(textList == null) { //식재료 값이 없으면 다시 인식
                 Toast.makeText(getApplicationContext(), "영수증을 다시 인식시켜주세요", Toast.LENGTH_SHORT).show();
                 getSupportFragmentManager().beginTransaction().remove(frag).commit();
                 activityMainBinding.OCRBtn.setVisibility(View.GONE);
                 OcrFragment ocrFragment = OcrFragment.newInstance();
-                ocrFragment.setOcrFragmentListener(MainActivity.this::onOcrSuccess);
+                ocrFragment.setOcrFragmentListener(MainActivity.this::ocrSuccess);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
+            } else { //식재료 값이 있을 경우 다른 프래그먼트 열기
+                IngredientFragment ingredientFragment = IngredientFragment.newInstance();
+                //ingredientFragment.setTextList(textList);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment, "OcrFragment")
+                        .commit();
             }
-
         }
-
-
     }
 
     @Override
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
             public void onClick(View view) {
                 activityMainBinding.OCRBtn.setVisibility(View.GONE);
                 OcrFragment ocrFragment = OcrFragment.newInstance();
-                ocrFragment.setOcrFragmentListener(MainActivity.this::onOcrSuccess);
+                ocrFragment.setOcrFragmentListener(MainActivity.this::ocrSuccess);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
