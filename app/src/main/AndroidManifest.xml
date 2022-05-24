@@ -10,6 +10,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipify">
         <activity
+            android:name=".FragmentUser"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_fragment_user"
+            android:theme="@style/Theme.Recipify.Fullscreen" />
+        <activity
+            android:name=".FragmentMaterial"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_fragment_material"
+            android:theme="@style/Theme.Recipify.Fullscreen" />
+        <activity
+            android:name=".FragmentSearch"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_fragment_search"
+            android:theme="@style/Theme.Recipify.Fullscreen" />
+        <activity
             android:name=".signup"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"

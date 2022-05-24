@@ -7,4 +7,7 @@
     <string name="title_activity_searching">searching</string>
     <string name="title_activity_item">item</string>
     <string name="title_activity_navigation_bar">NavigationBar</string>
+    <string name="title_activity_fragment_search">FragmentSearch</string>
+    <string name="title_activity_fragment_material">Fragment_material</string>
+    <string name="title_activity_fragment_user">FragmentUser</string>
 </resources>
