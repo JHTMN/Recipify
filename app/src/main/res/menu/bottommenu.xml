@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/search_tap"
+        android:title="레시피 검색" />
+
+    <item
+        android:id="@+id/material_tap"
+        android:title="내 재료" />
+    <item
+        android:id="@+id/user_tap"
+        android:title="내 정보" />
+</menu>

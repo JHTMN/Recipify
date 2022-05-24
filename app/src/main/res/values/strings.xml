@@ -6,4 +6,5 @@
     <string name="title_activity_signup">signup</string>
     <string name="title_activity_searching">searching</string>
     <string name="title_activity_item">item</string>
+    <string name="title_activity_navigation_bar">NavigationBar</string>
 </resources>

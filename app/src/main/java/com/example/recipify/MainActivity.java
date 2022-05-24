@@ -1,27 +1,33 @@
 package com.example.recipify;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ListView;
+import android.os.Handler;
 
 
 
 public class MainActivity extends AppCompatActivity {
-    private ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_searching);
+        setContentView(R.layout.activity_main);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); //다크모드 해제
+        //로딩시간
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        listview = (ListView)findViewById(R.id.listView);
-
-        /* 아이템 추가 및 어댑터 등록 */
-        dataSetting();
+                Intent intent = new Intent(MainActivity.this, Login.class); //화면 전환
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+                finish();
+            }
+        }, 2000);
     }
 
-    private void dataSetting(){
-
-
-    }
 }

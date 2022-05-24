@@ -10,25 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipify">
         <activity
-            android:name=".item"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/title_activity_item"
-            android:theme="@style/Theme.Recipify.Fullscreen" />
-        <activity
-            android:name=".searching"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false"
-            android:label="@string/title_activity_searching"
-            android:theme="@style/Theme.Recipify.Fullscreen" />
-        <activity
             android:name=".signup"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_signup"
             android:theme="@style/Theme.Recipify.Fullscreen" />
         <activity
-            android:name=".login"
+            android:name=".NaviBar"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_signup"
+            android:theme="@style/Theme.Recipify.Fullscreen" />
+        <activity
+            android:name=".Login"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_login"

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-class Signup extends AppCompatActivity {
+public class signup extends AppCompatActivity {
     TextView back;
     EditText name,id,pw,pw2,email,birthyear,birthdate,birthday;
     Button pwcheck, submit;
@@ -40,7 +40,7 @@ class Signup extends AppCompatActivity {
             if(pw.getText().toString().equals(pw2.getText().toString())){
                 pwcheck.setText("일치");
             }else{
-                Toast.makeText(Signup.this, "비밀번호가 다릅니다.", Toast.LENGTH_LONG).show();
+                Toast.makeText(signup.this, "비밀번호가 다릅니다.", Toast.LENGTH_LONG).show();
             }
         });
 
