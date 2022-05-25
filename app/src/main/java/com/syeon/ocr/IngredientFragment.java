@@ -3,6 +3,7 @@ package com.syeon.ocr;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +24,10 @@ public class IngredientFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static IngredientFragment newInstance() {
+    public static IngredientFragment newInstance(ArrayList<String> textList) {
         IngredientFragment fragment = new IngredientFragment();
         Bundle args = new Bundle();
+        args.putSerializable("textList", textList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,11 +49,16 @@ public class IngredientFragment extends Fragment {
 
     }
 
-    public void setTextList(ArrayList<String> textList) {
-        this.textList = textList;
-
-        fragmentIngredientBinding.ingredientText.setText(textList.get(0));
+    @Override
+    public void onStart() {
+        super.onStart();
+        textList = (ArrayList) getArguments().getSerializable("textList");
+        IngredientAdapter ingredientAdapter = new IngredientAdapter();
+        ingredientAdapter.setIngredientList(textList);
+        fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
+        fragmentIngredientBinding.ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
+
 
 
 }

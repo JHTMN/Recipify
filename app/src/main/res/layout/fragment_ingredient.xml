@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".IngredientFragment">
 
-    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/ingredient_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        ></com.google.android.material.textfield.MaterialAutoCompleteTextView>
+   <androidx.recyclerview.widget.RecyclerView
+       android:id="@+id/ingredient_recycler_view"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+   </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

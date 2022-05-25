@@ -72,8 +72,7 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
             } else { //식재료 값이 있을 경우 다른 프래그먼트 열기
-                IngredientFragment ingredientFragment = IngredientFragment.newInstance();
-                //ingredientFragment.setTextList(textList);
+                IngredientFragment ingredientFragment = IngredientFragment.newInstance(textList);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment, "OcrFragment")
                         .commit();
