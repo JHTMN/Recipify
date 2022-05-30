@@ -10,4 +10,6 @@
     <string name="title_activity_fragment_search">FragmentSearch</string>
     <string name="title_activity_fragment_material">Fragment_material</string>
     <string name="title_activity_fragment_user">FragmentUser</string>
+    <string name="title_activity_self">self</string>
+    <string name="title_activity_postitem">Postitem</string>
 </resources>

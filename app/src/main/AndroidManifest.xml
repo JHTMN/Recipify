@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.recipify">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -9,24 +12,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipify">
+
+        <activity
+            android:name=".self"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_self"
+            android:theme="@style/Theme.Recipify.Fullscreen" />
         <activity
             android:name=".FragmentUser"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_fragment_user"
-            android:theme="@style/Theme.Recipify.Fullscreen" />
+            android:theme="@style/Theme.Recipify.Fullscreen"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".FragmentMaterial"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_fragment_material"
-            android:theme="@style/Theme.Recipify.Fullscreen" />
+            android:theme="@style/Theme.Recipify.Fullscreen"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".FragmentSearch"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_fragment_search"
-            android:theme="@style/Theme.Recipify.Fullscreen" />
+            android:theme="@style/Theme.Recipify.Fullscreen"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".signup"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -54,6 +67,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocrTest" />
     </application>
 
 </manifest>
