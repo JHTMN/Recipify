@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>
+            implements ItemTouchHelperListener{
 
     private ArrayList<String> ingredientList;
 
@@ -34,12 +35,23 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         return ingredientList.size();
     }
 
+    @Override
+    public boolean onItemMove(int from_position, int to_position) {
+        return false;
+    }
+
+    @Override
+    public void onItemSwipe(int position) {
+        ingredientList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public class IngredientViewHolder extends RecyclerView.ViewHolder {
         TextView ingredientText;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            ingredientText = itemView.findViewById(R.id.ingredient_text);
+            ingredientText = itemView.findViewById(R.id.ingredient_text_view);
 
         }
     }

@@ -1,7 +1,5 @@
 package com.syeon.ocr;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,11 +27,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.syeon.ocr.databinding.ActivityLoginBinding;
+import com.syeon.ocr.databinding.ActivityLoginGoogleBinding;
 
-public class LoginActivity extends AppCompatActivity {
+public class GoogleLoginActivity extends AppCompatActivity {
 
-    private ActivityLoginBinding activityLoginBinding;
+    private ActivityLoginGoogleBinding activityLoginGoogleBinding;
 
     private FirebaseAuth mAuth; //사용자 인증
 
@@ -49,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        activityLoginBinding = ActivityLoginBinding.inflate(getLayoutInflater());
-        View view = activityLoginBinding.getRoot();
+        activityLoginGoogleBinding = ActivityLoginGoogleBinding.inflate(getLayoutInflater());
+        View view = activityLoginGoogleBinding.getRoot();
         setContentView(view);
 
         mAuth = FirebaseAuth.getInstance();
@@ -70,11 +68,11 @@ public class LoginActivity extends AppCompatActivity {
                 // Automatically sign in when exactly one credential is retrieved.
                 .build();
 
-        activityLoginBinding.googleLoginBnt.setOnClickListener(new View.OnClickListener() {
+        activityLoginGoogleBinding.googleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 oneTapClient.beginSignIn(signInRequest)
-                        .addOnSuccessListener(LoginActivity.this, new OnSuccessListener<BeginSignInResult>() {
+                        .addOnSuccessListener(GoogleLoginActivity.this, new OnSuccessListener<BeginSignInResult>() {
                             @Override
                             public void onSuccess(BeginSignInResult result) {
                                 try {
@@ -86,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             }
                         })
-                        .addOnFailureListener(LoginActivity.this, new OnFailureListener() {
+                        .addOnFailureListener(GoogleLoginActivity.this, new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // No saved credentials found. Launch the One Tap sign-up flow, or
@@ -121,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                             //uid -> mainactivity
 
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            Intent intent = new Intent(GoogleLoginActivity.this, MainActivity.class);
                                             intent.putExtra("uid", user.getUid());
                                             startActivity(intent);
 
@@ -145,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(GoogleLoginActivity.this, MainActivity.class);
             //intent.putExtra("uid", user.getUid());
             startActivity(intent);
         }

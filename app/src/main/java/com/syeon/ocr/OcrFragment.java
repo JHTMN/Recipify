@@ -207,19 +207,14 @@ public class OcrFragment extends Fragment {
                                 } else {
                                     // Task completed successfully
                                     //인식된 텍스트를 text 필드에 저장
-
-                                    Log.d("result", task.getResult().getAsJsonArray().get(0).toString());
                                     if (task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation") != null) {
                                         JsonObject annotation = task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation").getAsJsonObject();
-
                                         ocrFragmentListener.ocrSuccess(checkIngredients(getTextList(annotation)));
-
                                         Log.d("IngredientList", checkIngredients(getTextList(annotation)).toString());
                                         Toast.makeText(requireContext(), checkIngredients(getTextList(annotation)).toString(), Toast.LENGTH_LONG)
                                                 .show();
                                     } else {
                                         ocrFragmentListener.ocrSuccess(null);
-
                                     }
                                 }
                             }

@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/drawable/pumpkin_24.xml" value="0.1" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/activity_login.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/activity_main.xml" value="0.10144927536231885" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_b_card_recognition.xml" value="0.10144927536231885" />
@@ -16,6 +17,7 @@
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_ocr.xml" value="0.1" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_recipes_search.xml" value="0.129981884057971" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_recommend.xml" value="0.15715579710144928" />
+        <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/ingredient_add_list_view.xml" value="0.1439814814814815" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/ingredient_list_view.xml" value="0.13994565217391305" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/menu/main_bottom_menu.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/menu/main_menu_bar.xml" value="0.15729166666666666" />

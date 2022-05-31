@@ -8,13 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.syeon.ocr.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
@@ -40,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         }else {
             requestPermissions(new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_PERMISSIONS);
         }
+
     }
 
     //카메라 권한 설정
@@ -72,12 +69,13 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
             } else { //식재료 값이 있을 경우 다른 프래그먼트 열기
-                IngredientFragment ingredientFragment = IngredientFragment.newInstance(textList);
+                IngredientAddFragment ingredientAddFragment = IngredientAddFragment.newInstance(textList);
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment, "OcrFragment")
+                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientAddFragment, "OcrFragment")
                         .commit();
             }
         }
+
     }
 
     @Override
@@ -99,5 +97,8 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
             }
         });
     }
+
+
+
 
 }

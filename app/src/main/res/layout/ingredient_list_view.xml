@@ -4,16 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-        android:id="@+id/ingredient_text"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="8dp"
-        >
-    </com.google.android.material.textfield.MaterialAutoCompleteTextView>
+        android:orientation="vertical">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/ingredient_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="16dp">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <CalendarView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </CalendarView>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.syeon.ocr.databinding.FragmentIngredientAddBinding;
 import com.syeon.ocr.databinding.FragmentIngredientBinding;
 
 import java.util.ArrayList;
@@ -16,13 +17,14 @@ import java.util.ArrayList;
 
 public class IngredientFragment extends Fragment {
 
-    private FragmentIngredientBinding fragmentIngredientBinding;
+    FragmentIngredientBinding fragmentIngredientBinding;
 
     private ArrayList<String> textList;
 
     public IngredientFragment() {
         // Required empty public constructor
     }
+
 
     public static IngredientFragment newInstance(ArrayList<String> textList) {
         IngredientFragment fragment = new IngredientFragment();
@@ -42,9 +44,8 @@ public class IngredientFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        fragmentIngredientBinding = FragmentIngredientBinding
-                .inflate(inflater, container, false);
+
+        fragmentIngredientBinding = FragmentIngredientBinding.inflate(inflater, container, false);
         return fragmentIngredientBinding.getRoot();
 
     }
@@ -55,10 +56,9 @@ public class IngredientFragment extends Fragment {
         textList = (ArrayList) getArguments().getSerializable("textList");
         IngredientAdapter ingredientAdapter = new IngredientAdapter();
         ingredientAdapter.setIngredientList(textList);
+
         fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
         fragmentIngredientBinding.ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
     }
-
-
-
 }
