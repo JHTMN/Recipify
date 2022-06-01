@@ -44,8 +44,9 @@ public class FragmentMaterial extends Fragment {
             public void onClick(View v) {
                 //
                 anim();
-                /*Intent intent = new Intent(getActivity(), Route.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), GoogleLoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
             }
         });
 

@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.recipify">
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +17,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Recipify">
-
+        <activity android:name=".GoogleLoginActivity"></activity>
+        <activity
+            android:name=".OCRMainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="false"
+            android:label="@string/title_activity_ocrmain"
+            android:theme="@style/Theme.Recipify.Fullscreen" />
         <activity
             android:name=".self"
             android:configChanges="orientation|keyboardHidden|screenSize"

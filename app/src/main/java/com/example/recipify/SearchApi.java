@@ -19,12 +19,9 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface CheckApi {
+public interface SearchApi {
 
-    @Multipart
-    @POST("/login")
-    Call<Check> CheckAccounts(
-            @Part("identify") RequestBody identify,
-            @Part("password") RequestBody password);
+//    @GET("/search")
+//    Call<>
 }
 

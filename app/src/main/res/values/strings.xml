@@ -12,4 +12,5 @@
     <string name="title_activity_fragment_user">FragmentUser</string>
     <string name="title_activity_self">self</string>
     <string name="title_activity_postitem">Postitem</string>
+    <string name="title_activity_ocrmain">OCRMainActivity</string>
 </resources>

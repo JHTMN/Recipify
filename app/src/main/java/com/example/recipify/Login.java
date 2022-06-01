@@ -1,6 +1,7 @@
 package com.example.recipify;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +31,7 @@ public class Login extends AppCompatActivity {
 
         // Retrofit 객체 생성
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://e2e6-203-230-13-202.jp.ngrok.io")
+                .baseUrl("https://b084-203-230-13-202.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -57,14 +60,10 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String inputid = id.getText().toString();
-                String inputpassword = pw.getText().toString();
+                RequestBody inputid = RequestBody.create(MediaType.parse("text.plain"), id.getText().toString());
+                RequestBody inputpassword = RequestBody.create(MediaType.parse("text.plain"), pw.getText().toString());
 
-                Check check = new Check(
-                        inputid,
-                        inputpassword
-                );
-                Call<Check> call = checkApi.CheckAccounts(check);
+                Call<Check> call = checkApi.CheckAccounts(inputid, inputpassword);
 
                 call.enqueue(new Callback<Check>() {
 
@@ -78,6 +77,11 @@ public class Login extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<Check> call, Throwable t) {
+
+//                        AlertDialog.Builder builder1 = new AlertDialog.Builder(Login.this);
+//                        builder1.setTitle("경고").setMessage("아이디 및 비밀번호를 다시 확인해주세요.");
+//                        AlertDialog alertDialog = builder1.create();
+//                        alertDialog.show();
 
                     }
                 });
