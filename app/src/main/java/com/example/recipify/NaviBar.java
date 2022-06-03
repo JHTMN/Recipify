@@ -20,7 +20,6 @@ public class NaviBar extends AppCompatActivity {
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentSearch fragmentSearch = new FragmentSearch();
     private FragmentMaterial fragmentMaterial = new FragmentMaterial();
-    private FragmentUser fragmentUser = new FragmentUser();
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class NaviBar extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.frameLayout, fragmentSearch).commitAllowingStateLoss();
+        transaction.replace(R.id.frameLayout, fragmentMaterial).commitAllowingStateLoss();
 
     }
 
@@ -49,9 +48,6 @@ public class NaviBar extends AppCompatActivity {
 
                 case R.id.material_tap:
                     transaction.replace(R.id.frameLayout, fragmentMaterial).commitAllowingStateLoss();
-                    break;
-                case R.id.user_tap:
-                    transaction.replace(R.id.frameLayout, fragmentUser).commitAllowingStateLoss();
                     break;
             }
             return true;

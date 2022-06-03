@@ -13,4 +13,5 @@
     <string name="title_activity_self">self</string>
     <string name="title_activity_postitem">Postitem</string>
     <string name="title_activity_ocrmain">OCRMainActivity</string>
+    <string name="title_activity_recipe_info">recipeInfo</string>
 </resources>

@@ -31,7 +31,7 @@ public class Login extends AppCompatActivity {
 
         // Retrofit 객체 생성
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://b084-203-230-13-202.jp.ngrok.io")
+                .baseUrl("https://0cd4-203-230-13-202.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 

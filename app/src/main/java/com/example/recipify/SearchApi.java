@@ -21,7 +21,7 @@ import retrofit2.http.Query;
 
 public interface SearchApi {
 
-//    @GET("/search")
-//    Call<>
+    @GET("/search")
+    Call<List<Search_Data>> getData();
 }
 
