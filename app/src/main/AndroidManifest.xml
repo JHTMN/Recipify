@@ -17,7 +17,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Recipify">
+        android:theme="@style/Theme.Recipify"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".recipeInfo"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -37,15 +38,16 @@
             android:exported="false"
             android:label="@string/title_activity_self"
             android:theme="@style/Theme.Recipify.Fullscreen" />
+
         <activity
-            android:name=".FragmentUser"
+            android:name=".FragmentMaterial"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
-            android:label="@string/title_activity_fragment_user"
+            android:label="@string/title_activity_fragment_material"
             android:theme="@style/Theme.Recipify.Fullscreen"
             tools:ignore="Instantiatable" />
         <activity
-            android:name=".FragmentMaterial"
+            android:name=".IngredientFragment"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
             android:label="@string/title_activity_fragment_material"

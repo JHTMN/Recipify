@@ -4,21 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_fragment_material.xml" value="0.1" />
-        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_fragment_search.xml" value="0.1" />
+        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_fragment_search.xml" value="0.152" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_fragment_user.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_item.xml" value="0.21145833333333333" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_login.xml" value="0.264" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_login_google.xml" value="0.1" />
-        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_navigation_bar.xml" value="0.21145833333333333" />
+        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_navigation_bar.xml" value="0.2" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_ocrmain.xml" value="0.10092592592592593" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_postitem.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_recipe_info.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_recipe_info.xml" value="0.1" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_searching.xml" value="0.196875" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_self.xml" value="0.109375" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/activity_signup.xml" value="0.264" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/fragment_ingredient.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/fragment_ingredient_add.xml" value="0.12916666666666668" />
+        <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/fragment_ingredient_add.xml" value="0.2" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/fragment_ocr.xml" value="0.9271948608137045" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/fragment_search_view.xml" value="0.1" />
         <entry key="..\:/Users/chaej/AndroidStudioProjects/Recipify/app/src/main/res/layout/ingredient_add_list_view.xml" value="0.11347517730496454" />

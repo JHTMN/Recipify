@@ -23,5 +23,6 @@ public interface SearchApi {
 
     @GET("/search")
     Call<List<Search_Data>> getData();
+
 }
 
