@@ -20,18 +20,21 @@ public class IngredientAddFragment extends Fragment {
 
     private FragmentIngredientAddBinding fragmentIngredientAddBinding;
 
-    private ArrayList<HashMap<String, Object>> ingredientMaps;
-    private ArrayList<String> textList;
+    private ArrayList<HashMap<String, Object>> ingredientMaps = new ArrayList<>();
+    private ArrayList<String> ingredientList;
+
+    private IngredientAddAdapter ingredientAddAdapter = new IngredientAddAdapter();
+
 
 
     public IngredientAddFragment() {
         // Required empty public constructor
     }
 
-    public static IngredientAddFragment newInstance(ArrayList<String> textList) {
+    public static IngredientAddFragment newInstance(ArrayList<String> ingredientList) {
         IngredientAddFragment fragment = new IngredientAddFragment();
         Bundle args = new Bundle();
-        args.putSerializable("textList", textList);
+        args.putSerializable("ingredientList", ingredientList); //OCR에서 받아온 ingredientList
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,15 +59,14 @@ public class IngredientAddFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        textList = (ArrayList) getArguments().getSerializable("textList");
-        for(String text: textList) {
-            HashMap<String, Object> textHashMap = new HashMap<>();
-            textHashMap.put("ingredient", text);
-            textHashMap.put("date", "00/00/00");
-            ingredientMaps.add(textHashMap);
+        ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
+        for(String oneIngredientText: ingredientList) {
+            HashMap<String, Object> ingredientHashMap = new HashMap<>();
+            ingredientHashMap.put("ingredient", oneIngredientText);
+            ingredientHashMap.put("date", "00/00/00");
+            ingredientMaps.add(ingredientHashMap);
         }
-        IngredientAddAdapter ingredientAddAdapter = new IngredientAddAdapter();
-        ingredientAddAdapter.setIngredientList(textList);
+        ingredientAddAdapter.setIngredientMaps(ingredientMaps);
         fragmentIngredientAddBinding.ingredientRecyclerView.setAdapter(ingredientAddAdapter);
         fragmentIngredientAddBinding.ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         startSaveBtn();
@@ -74,7 +76,7 @@ public class IngredientAddFragment extends Fragment {
         fragmentIngredientAddBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IngredientFragment ingredientFragment = IngredientFragment.newInstance(ingredientMaps);
+                IngredientFragment ingredientFragment = IngredientFragment.newInstance(ingredientList);
 
                 FragmentManager fragmentManager = getParentFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment)

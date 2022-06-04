@@ -9,10 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IngredientAddAdapter extends RecyclerView.Adapter<IngredientAddAdapter.IngredientAddViewHolder> {
 
-    private ArrayList<String> ingredientList;
+    private ArrayList<HashMap<String, Object>> ingredientMaps;
 
     @NonNull
     @Override
@@ -24,14 +25,15 @@ public class IngredientAddAdapter extends RecyclerView.Adapter<IngredientAddAdap
 
     @Override
     public void onBindViewHolder(@NonNull IngredientAddViewHolder ingredientAddViewholder, int position) {
-        String ingredients = ingredientList.get(position);
-        ingredientAddViewholder.ingredientText.setText(ingredients);
+        HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
+        String ingredient = (String) ingredientHashMap.get("ingredient");
+        ingredientAddViewholder.ingredientText.setText(ingredient);
 
     }
 
     @Override
     public int getItemCount() {
-        return ingredientList.size();
+        return ingredientMaps.size();
     }
 
     public class IngredientAddViewHolder extends RecyclerView.ViewHolder {
@@ -44,8 +46,8 @@ public class IngredientAddAdapter extends RecyclerView.Adapter<IngredientAddAdap
         }
     }
 
-    public void setIngredientList(ArrayList<String> ingredientList){
-        this.ingredientList = ingredientList;
+    public void setIngredientMaps(ArrayList<HashMap<String, Object>> ingredientMaps){
+        this.ingredientMaps = ingredientMaps;
     }
 
 

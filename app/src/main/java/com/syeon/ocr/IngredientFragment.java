@@ -1,8 +1,9 @@
 package com.syeon.ocr;
 
+import android.annotation.SuppressLint;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,28 +11,35 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
-import com.google.type.DateTime;
-import com.syeon.ocr.databinding.FragmentIngredientAddBinding;
 import com.syeon.ocr.databinding.FragmentIngredientBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.SimpleTimeZone;
 
 
 public class IngredientFragment extends Fragment implements ItemTouchHelperListener, CalenderListener{
 
+    FragmentIngredientBinding fragmentIngredientBinding;
+
+    private ArrayList<HashMap<String,Object>> ingredientMaps = new ArrayList<>();
+    private HashMap<String, Object> ingredientHashMap = new HashMap<>();
+    private ArrayList<String> ingredientList;
+
+    private ItemTouchHelperCallback itemTouchHelperCallback;
+
+    private MaterialDatePicker datePicker;
+    private SimpleDateFormat simpleDateFormat;
+
+    private IngredientAdapter ingredientAdapter = new IngredientAdapter();;
+
     public IngredientFragment() {
 
     }
-
 
     @Override
     public boolean onItemMove(int from_position, int to_position) {
@@ -44,21 +52,10 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
 
     }
 
-    FragmentIngredientBinding fragmentIngredientBinding;
-
-    private ArrayList<HashMap<String,Object>> textList;
-
-    private ItemTouchHelperCallback itemTouchHelperCallback;
-
-    private MaterialDatePicker datePicker;
-    private SimpleDateFormat simpleDateFormat;
-    IngredientAdapter ingredientAdapter;
-
-
-    public static IngredientFragment newInstance(ArrayList<String> textList) {
+    public static IngredientFragment newInstance(ArrayList<String> ingredientList) {
         IngredientFragment fragment = new IngredientFragment();
         Bundle args = new Bundle();
-        args.putSerializable("textList", textList);
+        args.putSerializable("ingredientList", ingredientList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,24 +73,27 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        fragmentIngredientBinding = FragmentIngredientBinding.inflate(inflater, container, false);
+        fragmentIngredientBinding = FragmentIngredientBinding
+                .inflate(inflater, container, false);
         return fragmentIngredientBinding.getRoot();
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        textList = (ArrayList) getArguments().getSerializable("textList");
-        ingredientAdapter = new IngredientAdapter();
-        ingredientAdapter.setIngredientList(textList);
+        ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
+        for(String oneIngredientText: ingredientList) {
+            ingredientHashMap.put("ingredient", oneIngredientText);
+            ingredientHashMap.put("date", "00/00/00");
+            ingredientMaps.add(ingredientHashMap);
+        }
+        ingredientAdapter.setIngredientMaps(ingredientMaps);
         ingredientAdapter.setCalenderListener(this::calender);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(fragmentIngredientBinding.ingredientRecyclerView);
 
         fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
         fragmentIngredientBinding.ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
 
     }
 
@@ -106,11 +106,17 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         datePicker.show(getParentFragmentManager(),"calender");
 
         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onPositiveButtonClick(Object selection) {
                 String date = simpleDateFormat.format(selection);
                 //map date 변경
+                ingredientHashMap.replace("date", date);
+
+                //ingredientAdapter = (IngredientAdapter) fragmentIngredientBinding.ingredientRecyclerView.getAdapter();
                 ingredientAdapter.notifyDataSetChanged();
+                //fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
+
                 Toast.makeText(getContext(), "selection " + date, Toast.LENGTH_SHORT).show();
             }
         });

@@ -3,10 +3,6 @@ package com.syeon.ocr;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -22,8 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.functions.FirebaseFunctions;
@@ -41,11 +35,8 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
-
-import javax.xml.transform.Result;
 
 public class OcrFragment extends Fragment {
 
@@ -209,9 +200,9 @@ public class OcrFragment extends Fragment {
                                     //인식된 텍스트를 text 필드에 저장
                                     if (task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation") != null) {
                                         JsonObject annotation = task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation").getAsJsonObject();
-                                        ocrFragmentListener.ocrSuccess(checkIngredients(getTextList(annotation)));
-                                        Log.d("IngredientList", checkIngredients(getTextList(annotation)).toString());
-                                        Toast.makeText(requireContext(), checkIngredients(getTextList(annotation)).toString(), Toast.LENGTH_LONG)
+                                        ocrFragmentListener.ocrSuccess(checkIngredients(getOCRIngredientList(annotation)));
+                                        Log.d("IngredientList", checkIngredients(getOCRIngredientList(annotation)).toString());
+                                        Toast.makeText(requireContext(), checkIngredients(getOCRIngredientList(annotation)).toString(), Toast.LENGTH_LONG)
                                                 .show();
                                     } else {
                                         ocrFragmentListener.ocrSuccess(null);
@@ -277,9 +268,9 @@ public class OcrFragment extends Fragment {
             });
     }
 
-    private ArrayList<String> getTextList(JsonObject annotation){
+    private ArrayList<String> getOCRIngredientList(JsonObject annotation){
 
-        ArrayList<String> textList = new ArrayList<> (Arrays.asList(""));
+        ArrayList<String> ingredientList = new ArrayList<> (Arrays.asList(""));
 
         //이미지 영역과 관련된 정보를 가져오기
         for (JsonElement page : annotation.get("pages").getAsJsonArray()) {
@@ -294,11 +285,11 @@ public class OcrFragment extends Fragment {
                             wordText.append(symbol.getAsJsonObject().get("text").getAsString());
                         }
                         paraText.append(wordText.toString()).append(" ");
-                        textList.add(wordText.toString());
-                        int textSize = textList.size();
-                        String paymentText = textList.get(textSize - 2);
-                        String priceText = paymentText + textList.get(textSize - 1);
-                        if (priceText.equals("결제금액")) { return textList; }
+                        ingredientList.add(wordText.toString());
+                        int textSize = ingredientList.size();
+                        String paymentText = ingredientList.get(textSize - 2);
+                        String priceText = paymentText + ingredientList.get(textSize - 1);
+                        if (priceText.equals("결제금액")) { return ingredientList; }
                     }
                     blockText.append(paraText);
                     Log.d("OCR", paraText.toString());
@@ -306,7 +297,7 @@ public class OcrFragment extends Fragment {
                 pageText.append(blockText);
             }
         }
-        return textList;
+        return ingredientList;
     }
 
     private ArrayList<String> checkIngredients(ArrayList<String> textList) {
