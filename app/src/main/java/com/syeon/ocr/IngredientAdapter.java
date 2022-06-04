@@ -1,5 +1,6 @@
 package com.syeon.ocr;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
-    private ArrayList<String> ingredientList;
+
+    private ArrayList<HashMap<String, Object>> ingredientList;
+    private CalenderListener calenderListener;
+
+    public void setCalenderListener(CalenderListener calenderListener) {
+        this.calenderListener = calenderListener;
+    }
+
 
     @NonNull
     @Override
@@ -26,10 +35,16 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientViewHolder ingredientViewholder, int position) {
-        String ingredients = ingredientList.get(position);
-        ingredientViewholder.ingredientText.setText(ingredients);
+    public void onBindViewHolder(@NonNull IngredientViewHolder ingredientViewholder, @SuppressLint("RecyclerView") int position) {
+        HashMap<String, Object> ingredients = ingredientList.get(position);
+        ingredientViewholder.ingredientText.setText((CharSequence) ingredients);
 
+        ingredientViewholder.date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calenderListener.calender(position);
+            }
+        });
     }
 
     @Override
@@ -42,17 +57,21 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         TextView ingredientText;
         TextView date;
 
-
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             ingredientText = itemView.findViewById(R.id.ingredient_text_view);
             date = itemView.findViewById(R.id.date_text_view);
 
+
         }
+
+
     }
 
-    public void setIngredientList(ArrayList<String> ingredientList){
+    public void setIngredientList(ArrayList<HashMap<String, Object>> ingredientList){
         this.ingredientList = ingredientList;
     }
+
+
 
 }

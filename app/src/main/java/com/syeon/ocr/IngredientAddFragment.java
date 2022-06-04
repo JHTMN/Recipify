@@ -13,13 +13,16 @@ import android.view.ViewGroup;
 import com.syeon.ocr.databinding.FragmentIngredientAddBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class IngredientAddFragment extends Fragment {
 
     private FragmentIngredientAddBinding fragmentIngredientAddBinding;
 
+    private ArrayList<HashMap<String, Object>> ingredientMaps;
     private ArrayList<String> textList;
+
 
     public IngredientAddFragment() {
         // Required empty public constructor
@@ -54,6 +57,12 @@ public class IngredientAddFragment extends Fragment {
     public void onStart() {
         super.onStart();
         textList = (ArrayList) getArguments().getSerializable("textList");
+        for(String text: textList) {
+            HashMap<String, Object> textHashMap = new HashMap<>();
+            textHashMap.put("ingredient", text);
+            textHashMap.put("date", "00/00/00");
+            ingredientMaps.add(textHashMap);
+        }
         IngredientAddAdapter ingredientAddAdapter = new IngredientAddAdapter();
         ingredientAddAdapter.setIngredientList(textList);
         fragmentIngredientAddBinding.ingredientRecyclerView.setAdapter(ingredientAddAdapter);
@@ -65,7 +74,8 @@ public class IngredientAddFragment extends Fragment {
         fragmentIngredientAddBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IngredientFragment ingredientFragment = IngredientFragment.newInstance(textList);
+                IngredientFragment ingredientFragment = IngredientFragment.newInstance(ingredientMaps);
+
                 FragmentManager fragmentManager = getParentFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment)
                         .commit();

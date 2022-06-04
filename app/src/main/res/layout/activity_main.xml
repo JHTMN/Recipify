@@ -25,6 +25,16 @@
             android:layout_gravity="bottom|center"
             ></com.google.android.material.button.MaterialButton>
 
+        <!--<com.google.android.material.button.MaterialButton
+            android:id="@+id/음식_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:text="음식"
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            ></com.google.android.material.button.MaterialButton>-->
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

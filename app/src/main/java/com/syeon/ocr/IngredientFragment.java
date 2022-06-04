@@ -14,15 +14,19 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.type.DateTime;
 import com.syeon.ocr.databinding.FragmentIngredientAddBinding;
 import com.syeon.ocr.databinding.FragmentIngredientBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.SimpleTimeZone;
 
 
 public class IngredientFragment extends Fragment implements ItemTouchHelperListener, CalenderListener{
-
-    private CalenderListener calenderListener;
 
     public IngredientFragment() {
 
@@ -42,17 +46,13 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
 
     FragmentIngredientBinding fragmentIngredientBinding;
 
-    private ArrayList<String> textList;
+    private ArrayList<HashMap<String,Object>> textList;
 
     private ItemTouchHelperCallback itemTouchHelperCallback;
 
     private MaterialDatePicker datePicker;
-
-
-    public IngredientFragment(CalenderListener calenderListener) {
-        // Required empty public constructor
-        this.calenderListener = calenderListener;
-    }
+    private SimpleDateFormat simpleDateFormat;
+    IngredientAdapter ingredientAdapter;
 
 
     public static IngredientFragment newInstance(ArrayList<String> textList) {
@@ -69,7 +69,7 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         if (getArguments() != null) {
         }
         itemTouchHelperCallback = new ItemTouchHelperCallback(this);
-
+        simpleDateFormat = new SimpleDateFormat("yy/MM/dd");
     }
 
     @Override
@@ -85,8 +85,9 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     public void onStart() {
         super.onStart();
         textList = (ArrayList) getArguments().getSerializable("textList");
-        IngredientAdapter ingredientAdapter = new IngredientAdapter();
+        ingredientAdapter = new IngredientAdapter();
         ingredientAdapter.setIngredientList(textList);
+        ingredientAdapter.setCalenderListener(this::calender);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(fragmentIngredientBinding.ingredientRecyclerView);
 
@@ -103,7 +104,16 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
         datePicker.show(getParentFragmentManager(),"calender");
-        calenderListener.calender(position);
+
+        datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+            @Override
+            public void onPositiveButtonClick(Object selection) {
+                String date = simpleDateFormat.format(selection);
+                //map date 변경
+                ingredientAdapter.notifyDataSetChanged();
+                Toast.makeText(getContext(), "selection " + date, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

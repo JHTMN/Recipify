@@ -98,7 +98,18 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         });
     }
 
-
-
+    /*
+    private void startIngredientBtn(){
+        activityMainBinding.OCRBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activityMainBinding.OCRBtn.setVisibility(View.GONE);
+                IngredientFragment ingredientFragment = IngredientFragment.newInstance();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment)
+                        .commit();
+            }
+        });
+    }*/
 
 }
