@@ -28,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            android:textColor="@color/purple_200"
+            android:textColor="#4CAF50"
+            android:layout_margin="15px"
             android:hint="메뉴명" />
 
         <TextView
@@ -42,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:layout_margin="15dp"
             android:text="필요 재료" />
         <TextView
             android:layout_width="match_parent"

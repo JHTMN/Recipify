@@ -3,12 +3,19 @@
 
     <item
         android:id="@+id/material_tap"
+        android:icon="@drawable/fridge"
         android:title="내 재료" />
 
 
     <item
         android:id="@+id/search_tap"
+        android:icon="@drawable/search"
         android:title="레시피 검색" />
+
+    <item
+        android:id="@+id/filter_tap"
+        android:icon="@drawable/filter"
+        android:title="조건 검색" />
 
 
 </menu>

@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Recipify"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".FragmentFilter"
+            android:exported="false" />
+        <activity
             android:name=".recipeInfo"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false"
@@ -38,7 +41,6 @@
             android:exported="false"
             android:label="@string/title_activity_self"
             android:theme="@style/Theme.Recipify.Fullscreen" />
-
         <activity
             android:name=".FragmentMaterial"
             android:configChanges="orientation|keyboardHidden|screenSize"

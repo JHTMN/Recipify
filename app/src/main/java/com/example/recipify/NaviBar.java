@@ -20,6 +20,7 @@ public class NaviBar extends AppCompatActivity {
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private FragmentSearch fragmentSearch = new FragmentSearch();
     private FragmentMaterial fragmentMaterial = new FragmentMaterial();
+    private FragmentFilter fragmentFilter = new FragmentFilter();
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -48,6 +49,10 @@ public class NaviBar extends AppCompatActivity {
 
                 case R.id.material_tap:
                     transaction.replace(R.id.frameLayout, fragmentMaterial).commitAllowingStateLoss();
+                    break;
+
+                case R.id.filter_tap:
+                    transaction.replace(R.id.frameLayout, fragmentFilter).commitAllowingStateLoss();
                     break;
             }
             return true;
