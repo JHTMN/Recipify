@@ -1,12 +1,15 @@
 package com.syeon.ocr;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +39,10 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     private MaterialDatePicker datePicker;
     private SimpleDateFormat simpleDateFormat;
 
+    Context context;
+    SwipeRefreshLayout swipeRefreshLayout;
+
+
     public IngredientFragment() {
         // Required empty public constructor
     }
@@ -63,6 +70,19 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         // Inflate the layout for this fragment
         fragmentIngredientBinding = FragmentIngredientBinding
                 .inflate(inflater, container, false);
+
+        loadNoteListData();
+
+        //당겨서 새로고침
+        swipeRefreshLayout = (SwipeRefreshLayout) fragmentIngredientBinding.ingredientRecyclerView.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadNoteListData();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
         return fragmentIngredientBinding.getRoot();
     }
 
@@ -115,6 +135,44 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
                 Toast.makeText(getContext(), "selection " + date, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+
+    @SuppressLint("Range")
+    public int loadNoteListData(){
+
+        //데이터를 가져오는 sql문 select... (id의 역순으로 정렬)
+        String loadSql = "select _id, TODO from " + NoteDatabase.TABLE_NOTE + " order by _id desc";
+
+        int recordCount = -1;
+        NoteDatabase database = NoteDatabase.getInstance(context);
+
+        if(database != null){
+            //cursor를 객체화하여 rawQuery문 저장
+            Cursor outCursor = database.rawQuery(loadSql);
+
+            recordCount = outCursor.getCount();
+
+            for(int i = 0; i < recordCount; i++) {
+                outCursor.moveToNext();
+                int _id = outCursor.getInt(0);
+                String todo = outCursor.getString(1);
+
+                HashMap<String, Object> ingredientHashMap = new HashMap<>();
+                ingredientHashMap.put("id", _id);
+                ingredientHashMap.put("todo", todo);
+                ingredientMaps.add(ingredientHashMap);
+            }
+
+            outCursor.close();
+
+            //어댑터에 연결 및 데이터셋 변경
+            ingredientAdapter.setIngredientMaps(ingredientMaps);
+            ingredientAdapter.notifyDataSetChanged();
+
+        }
+
+        return recordCount;
     }
 
     @Override
