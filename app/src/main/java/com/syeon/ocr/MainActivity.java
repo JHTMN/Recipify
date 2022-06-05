@@ -16,9 +16,12 @@ import com.syeon.ocr.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFragmentListener {
+    private static final String TAG = "MainActivity";
 
     private ActivityMainBinding activityMainBinding;
     public final int REQUEST_CODE_PERMISSIONS = 100; //카메라 권한설정
+
+    public static NoteDatabase noteDatabase = null;
 
 
     @Override
@@ -56,10 +59,10 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    public void ocrSuccess(ArrayList<String> textList) {
+    public void ocrSuccess(ArrayList<String> ingredientList) {
         Fragment frag = (OcrFragment) getSupportFragmentManager().findFragmentByTag("OcrFragment");
         if (frag != null) {
-            if(textList == null) { //식재료 값이 없으면 다시 인식
+            if(ingredientList == null) { //식재료 값이 없으면 다시 인식
                 Toast.makeText(getApplicationContext(), "영수증을 다시 인식시켜주세요", Toast.LENGTH_SHORT).show();
                 getSupportFragmentManager().beginTransaction().remove(frag).commit();
                 activityMainBinding.OCRBtn.setVisibility(View.GONE);
@@ -68,10 +71,10 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
-            } else { //식재료 값이 있을 경우 다른 프래그먼트 열기
-                IngredientAddFragment ingredientAddFragment = IngredientAddFragment.newInstance(textList);
+            } else { //식재료 값이 있을 경우 ingredientFragment 열기
+                IngredientFragment ingredientFragment = IngredientFragment.newInstance(ingredientList);
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientAddFragment, "OcrFragment")
+                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment, "OcrFragment")
                         .commit();
             }
         }

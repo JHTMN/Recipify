@@ -14,7 +14,6 @@ import java.util.HashMap;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
-
     private ArrayList<HashMap<String, Object>> ingredientMaps;
     private CalenderListener calenderListener;
 
@@ -35,22 +34,21 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     public void onBindViewHolder(@NonNull IngredientViewHolder ingredientViewholder, @SuppressLint("RecyclerView") int position) {
 
         HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
+        String ingredient = (String) ingredientHashMap.get("ingredient");
+        ingredientViewholder.ingredientText.setText(ingredient);
 
-        ingredientViewholder.ingredientText.setText((String) ingredientHashMap.get("ingredient"));
-
-        ingredientViewholder.date.setOnClickListener(new View.OnClickListener() {
+        /*ingredientViewholder.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 calenderListener.calender(position);
             }
-        });
+        });*/
     }
 
     @Override
     public int getItemCount() {
         return ingredientMaps.size();
     }
-
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder {
         TextView ingredientText;
@@ -59,18 +57,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             ingredientText = itemView.findViewById(R.id.ingredient_text_view);
-            date = itemView.findViewById(R.id.date_text_view);
-
-
+            //date = itemView.findViewById(R.id.date_text_view);
         }
-
-
     }
 
     public void setIngredientMaps(ArrayList<HashMap<String, Object>> ingredientMaps){
         this.ingredientMaps = ingredientMaps;
     }
-
-
 
 }

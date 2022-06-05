@@ -27,35 +27,23 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     FragmentIngredientBinding fragmentIngredientBinding;
 
     private ArrayList<HashMap<String,Object>> ingredientMaps = new ArrayList<>();
-    private HashMap<String, Object> ingredientHashMap = new HashMap<>();
     private ArrayList<String> ingredientList;
+
+    private IngredientAdapter ingredientAdapter = new IngredientAdapter();;
 
     private ItemTouchHelperCallback itemTouchHelperCallback;
 
     private MaterialDatePicker datePicker;
     private SimpleDateFormat simpleDateFormat;
 
-    private IngredientAdapter ingredientAdapter = new IngredientAdapter();;
-
     public IngredientFragment() {
-
-    }
-
-    @Override
-    public boolean onItemMove(int from_position, int to_position) {
-        return false;
-    }
-
-    @Override
-    public void onItemSwipe(int position) {
-        Toast.makeText(getContext(), "swipe"+position, Toast.LENGTH_SHORT).show();
-
+        // Required empty public constructor
     }
 
     public static IngredientFragment newInstance(ArrayList<String> ingredientList) {
         IngredientFragment fragment = new IngredientFragment();
         Bundle args = new Bundle();
-        args.putSerializable("ingredientList", ingredientList);
+        args.putSerializable("ingredientList", ingredientList); //OCR에서 받아온 ingredientList
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,7 +60,7 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         fragmentIngredientBinding = FragmentIngredientBinding
                 .inflate(inflater, container, false);
         return fragmentIngredientBinding.getRoot();
@@ -83,6 +71,7 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         super.onStart();
         ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
         for(String oneIngredientText: ingredientList) {
+            HashMap<String, Object> ingredientHashMap = new HashMap<>();
             ingredientHashMap.put("ingredient", oneIngredientText);
             ingredientHashMap.put("date", "00/00/00");
             ingredientMaps.add(ingredientHashMap);
@@ -111,15 +100,31 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
             public void onPositiveButtonClick(Object selection) {
                 String date = simpleDateFormat.format(selection);
                 //map date 변경
-                ingredientHashMap.replace("date", date);
+                ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
+                for(String oneIngredientText: ingredientList) {
+                    HashMap<String, Object> ingredientHashMap = new HashMap<>();
+                    ingredientHashMap.put("ingredient", oneIngredientText);
+                    ingredientHashMap.put("date", date);
+                    ingredientMaps.add(ingredientHashMap);
+                }
 
-                //ingredientAdapter = (IngredientAdapter) fragmentIngredientBinding.ingredientRecyclerView.getAdapter();
+                ingredientAdapter = (IngredientAdapter) fragmentIngredientBinding.ingredientRecyclerView.getAdapter();
                 ingredientAdapter.notifyDataSetChanged();
-                //fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
+                fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
 
                 Toast.makeText(getContext(), "selection " + date, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onItemMove(int from_position, int to_position) {
+        return false;
+    }
+
+    @Override
+    public void onItemSwipe(int position) {
+        Toast.makeText(getContext(), "swipe"+position, Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -11,6 +11,7 @@
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_b_card_recognition.xml" value="0.10144927536231885" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_guest.xml" value="0.10144927536231885" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_ingredient.xml" value="0.15925925925925927" />
+        <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_ingredient_add.xml" value="0.1" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_my_page.xml" value="0.13496376811594202" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_my_refrigerator.xml" value="0.1308876811594203" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_o_c_r.xml" value="0.10144927536231885" />
@@ -18,7 +19,7 @@
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_recipes_search.xml" value="0.129981884057971" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/fragment_recommend.xml" value="0.15715579710144928" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/ingredient_add_list_view.xml" value="0.1439814814814815" />
-        <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/ingredient_list_view.xml" value="0.13994565217391305" />
+        <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/layout/ingredient_list_view.xml" value="0.1" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/menu/main_bottom_menu.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/menu/main_menu_bar.xml" value="0.15729166666666666" />
         <entry key="..\:/Users/swan7/AndroidStudioProjects/OCR/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.15185185185185185" />
