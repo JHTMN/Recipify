@@ -21,13 +21,9 @@ import com.syeon.ocr.databinding.ActivityMainBinding;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFragmentListener {
-    private static final String TAG = "MainActivity";
 
     private ActivityMainBinding activityMainBinding;
     public final int REQUEST_CODE_PERMISSIONS = 100; //카메라 권한설정
-
-    Context context;
-    public static NoteDatabase noteDatabase = null;
 
 
     @Override
@@ -39,26 +35,22 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         View view = activityMainBinding.getRoot();
         setContentView(view);
 
+        /*//getSupportFragmentManager 을 이용하여 이전에 만들었던 **FrameLayout**에 `fragment_main.xml`이 추가
+        IngredientFragment mainFragment = IngredientFragment.newInstance();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, mainFragment)
+                .commit();*/
+
+
         //카메라 권한 설정
         if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
             startOCRbtn(); //권한설정돼있다면 OCR 프래그먼트 열기
         }else {
             requestPermissions(new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_PERMISSIONS);
         }
-
-/*        activityMainBinding.saveButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-
-                saveToDo();
-
-                Toast.makeText(getApplicationContext(),"추가되었습니다.",Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        openDatabase();*/
-
     }
+
+
 
     //카메라 권한 설정
     @Override
@@ -92,20 +84,16 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
             } else { //식재료 값이 있을 경우 ingredientFragment 열기
                 activityMainBinding.noteView.setVisibility(View.VISIBLE);
                 activityMainBinding.OCRBtn.setVisibility(View.VISIBLE);
-                IngredientFragment ingredientFragment = IngredientFragment.newInstance(ingredientList);
+
+                IngredientAddFragment ingredientAddFragment = IngredientAddFragment.newInstance(ingredientList);
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment, "OcrFragment")
+                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientAddFragment, "OcrFragment")
                         .commit();
             }
         }
 
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
 
     private void startOCRbtn(){
         activityMainBinding.OCRBtn.setOnClickListener(new View.OnClickListener() {
@@ -121,49 +109,5 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
             }
         });
     }
-
-    private void saveToDo(){
-
-        //EditText에 적힌 글을 가져오기
-        String todo = activityMainBinding.inputToDo.getText().toString();
-
-        //테이블에 값을 추가하는 sql구문 insert...
-        String sqlSave = "insert into " + NoteDatabase.TABLE_NOTE + " (TODO) values (" +
-                "'" + todo + "')";
-
-        //sql문 실행
-        NoteDatabase database = NoteDatabase.getInstance(context);
-        database.execSQL(sqlSave);
-
-        //저장과 동시에 EditText 안의 글 초기화
-        activityMainBinding.inputToDo.setText("");
-    }
-
-
-    public void openDatabase() {
-        // open database
-        if (noteDatabase != null) {
-            noteDatabase.close();
-            noteDatabase = null;
-        }
-
-        noteDatabase = NoteDatabase.getInstance(this);
-        boolean isOpen = noteDatabase.open();
-        if (isOpen) {
-            Log.d(TAG, "Note database is open.");
-        } else {
-            Log.d(TAG, "Note database is not open.");
-        }
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (noteDatabase != null) {
-            noteDatabase.close();
-            noteDatabase = null;
-        }
-    }
-
 
 }

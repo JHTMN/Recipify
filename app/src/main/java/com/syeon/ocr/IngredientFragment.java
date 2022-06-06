@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
@@ -26,31 +27,28 @@ import java.util.HashMap;
 
 
 public class IngredientFragment extends Fragment implements ItemTouchHelperListener, CalenderListener{
-
-    FragmentIngredientBinding fragmentIngredientBinding;
-
-    private ArrayList<HashMap<String,Object>> ingredientMaps = new ArrayList<>();
-    private ArrayList<String> ingredientList;
-
-    private IngredientAdapter ingredientAdapter = new IngredientAdapter();;
-
-    private ItemTouchHelperCallback itemTouchHelperCallback;
-
-    private MaterialDatePicker datePicker;
-    private SimpleDateFormat simpleDateFormat;
+    private static final String TAG = "IngredientFragment";
+    private FragmentIngredientBinding fragmentIngredientBinding;
+    private NoteAdapter ingredientAdapter = new NoteAdapter();;
 
     Context context;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+
+    private ArrayList<Note> ingredientMaps = new ArrayList<>();
+    private ItemTouchHelperCallback itemTouchHelperCallback;
+    private MaterialDatePicker datePicker;
+    private SimpleDateFormat simpleDateFormat;
 
 
     public IngredientFragment() {
         // Required empty public constructor
     }
 
-    public static IngredientFragment newInstance(ArrayList<String> ingredientList) {
+    public static IngredientFragment newInstance() { //(ArrayList<String> ingredientList) {
         IngredientFragment fragment = new IngredientFragment();
         Bundle args = new Bundle();
-        args.putSerializable("ingredientList", ingredientList); //OCR에서 받아온 ingredientList
+//        args.putSerializable("ingredientList", ingredientList); //OCR에서 받아온 ingredientList
         fragment.setArguments(args);
         return fragment;
     }
@@ -74,7 +72,7 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         loadNoteListData();
 
         //당겨서 새로고침
-        swipeRefreshLayout = (SwipeRefreshLayout) fragmentIngredientBinding.ingredientRecyclerView.findViewById(R.id.refresh_layout);
+        swipeRefreshLayout = (SwipeRefreshLayout) fragmentIngredientBinding.refreshLayout;
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -86,9 +84,12 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         return fragmentIngredientBinding.getRoot();
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
+        /*
+        //loadNoteListDate()로 이동
         ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
         for(String oneIngredientText: ingredientList) {
             HashMap<String, Object> ingredientHashMap = new HashMap<>();
@@ -96,11 +97,13 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
             ingredientHashMap.put("date", "00/00/00");
             ingredientMaps.add(ingredientHashMap);
         }
-        ingredientAdapter.setIngredientMaps(ingredientMaps);
-        ingredientAdapter.setCalenderListener(this::calender);
+
+        ingredientAdapter.setItems(ingredientMaps);
+        ingredientAdapter.setItems(this::calender);*/
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(fragmentIngredientBinding.ingredientRecyclerView);
 
+        //recyclerView, Adapter
         fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
         fragmentIngredientBinding.ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -119,18 +122,18 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
             @Override
             public void onPositiveButtonClick(Object selection) {
                 String date = simpleDateFormat.format(selection);
-                //map date 변경
+
+                /*//map date 변경
                 ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
+
                 for(String oneIngredientText: ingredientList) {
                     HashMap<String, Object> ingredientHashMap = new HashMap<>();
                     ingredientHashMap.put("ingredient", oneIngredientText);
                     ingredientHashMap.put("date", date);
                     ingredientMaps.add(ingredientHashMap);
                 }
-
-                ingredientAdapter = (IngredientAdapter) fragmentIngredientBinding.ingredientRecyclerView.getAdapter();
-                ingredientAdapter.notifyDataSetChanged();
-                fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
+                //ingredientAdapter.setIngredientMaps(ingredientMaps);
+                //ingredientAdapter.notifyDataSetChanged();*/
 
                 Toast.makeText(getContext(), "selection " + date, Toast.LENGTH_SHORT).show();
             }
@@ -153,23 +156,22 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
 
             recordCount = outCursor.getCount();
 
-            for(int i = 0; i < recordCount; i++) {
+            //_id, TODO가 담겨질 배열 생성
+            ArrayList<Note> items = new ArrayList<>();
+
+            //for문을 통해 하나하나 추가
+            for(int i = 0; i < recordCount; i++){
                 outCursor.moveToNext();
+
                 int _id = outCursor.getInt(0);
                 String todo = outCursor.getString(1);
-
-                HashMap<String, Object> ingredientHashMap = new HashMap<>();
-                ingredientHashMap.put("id", _id);
-                ingredientHashMap.put("todo", todo);
-                ingredientMaps.add(ingredientHashMap);
+                items.add(new Note(_id,todo));
             }
-
             outCursor.close();
 
             //어댑터에 연결 및 데이터셋 변경
-            ingredientAdapter.setIngredientMaps(ingredientMaps);
+            ingredientAdapter.setItems(items);
             ingredientAdapter.notifyDataSetChanged();
-
         }
 
         return recordCount;

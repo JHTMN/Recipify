@@ -1,6 +1,5 @@
 package com.syeon.ocr;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,55 +7,33 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
+    private static final String TAG = "NoteAdapter";
 
     //todolist아이템이 들어갈 배열
     ArrayList<Note> items = new ArrayList<>();
 
-    private ArrayList<HashMap<String, Object>> ingredientMaps;
-
-    private CalenderListener calenderListener;
-
-    public void setCalenderListener(CalenderListener calenderListener) {
-        this.calenderListener = calenderListener;
-    }
-
-
+    //todo_item.xml을 인플레이션
     @NonNull
     @Override
-    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_list_view,parent,false);
-        IngredientViewHolder ingredientViewHolder = new IngredientViewHolder(view);
-        return ingredientViewHolder;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View itemView = inflater.inflate(R.layout.ingredient_list_view, parent, false);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientViewHolder ingredientViewholder, @SuppressLint("RecyclerView") int position) {
-
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Note item = items.get(position);
-        ingredientViewholder.setItem(item);
-        ingredientViewholder.setLayout();
-
-        HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
-        String ingredient = (String) ingredientHashMap.get("ingredient");
-        ingredientViewholder.ingredientText.setText(ingredient);
-        ingredientViewholder.ingredientText.setText(ingredient);
-
-        /*ingredientViewholder.date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                calenderListener.calender(position);
-            }
-        });*/
+        holder.setItem(item);
+        holder.setLayout();
     }
 
     @Override
@@ -64,18 +41,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         return items.size();
     }
 
-    public class IngredientViewHolder extends RecyclerView.ViewHolder {
-        TextView date;
 
-        TextView ingredientText;
+    //ViewHolder의 역할을 하는 클래스
+    static class ViewHolder extends RecyclerView.ViewHolder{
+
         LinearLayout layoutTodo;
         CheckBox checkBox;
         Button deleteButton;
 
-        public IngredientViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView){
             super(itemView);
-            //ingredientText = itemView.findViewById(R.id.ingredient_text_view);
-            //date = itemView.findViewById(R.id.date_text_view);
+
             layoutTodo = itemView.findViewById(R.id.layoutTodo);
             checkBox = itemView.findViewById(R.id.checkBox);
             deleteButton = itemView.findViewById(R.id.deleteButton);
@@ -115,14 +91,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         }
     }
 
-    /*public void setItems(ArrayList<Note> items){
+    //배열에 있는 item들을 가리킴
+    public void setItems(ArrayList<Note> items){
         this.items = items;
-    }*/
-
-
-    public void setIngredientMaps(ArrayList<HashMap<String, Object>> ingredientMaps){
-        this.ingredientMaps = ingredientMaps;
     }
-
 
 }
