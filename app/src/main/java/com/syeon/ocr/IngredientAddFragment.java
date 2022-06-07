@@ -73,11 +73,11 @@ public class IngredientAddFragment extends Fragment {
         fragmentIngredientAddBinding.ingredientAddRecyclerView.setAdapter(ingredientAddAdapter);
         fragmentIngredientAddBinding.ingredientAddRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        startSaveBtn();
+        onSaveBtn();
     }
 
 
-    private void startSaveBtn() {
+    private void onSaveBtn() {
         fragmentIngredientAddBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

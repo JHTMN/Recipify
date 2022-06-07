@@ -41,7 +41,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
         HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
         String ingredient = (String) ingredientHashMap.get("ingredient");
-        ingredientViewholder.ingredientText.setText(ingredient);
+        ingredientViewholder.ingredient.setText(ingredient);
         ingredientViewholder.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,12 +56,13 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder {
+
+        CheckBox ingredient;
         TextView date;
-        CheckBox ingredientText;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            ingredientText = itemView.findViewById(R.id.ingredient_check_box);
+            ingredient = itemView.findViewById(R.id.ingredient_check_box);
             date = itemView.findViewById(R.id.date_text_view);
 
         }

@@ -42,7 +42,6 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     private MaterialDatePicker datePicker;
     private SimpleDateFormat simpleDateFormat;
 
-
     public IngredientFragment() {
         // Required empty public constructor
     }
@@ -96,12 +95,14 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
             ingredientMaps.add(ingredientHashMap);
         }
 
+        //adapter에 Map set
+        ingredientAdapter.setIngredientMaps(ingredientMaps);
+        ingredientAdapter.setCalenderListener(this::calender);
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(fragmentIngredientBinding.ingredientRecyclerView);
 
         //recyclerView, Adapter
-        ingredientAdapter.setIngredientMaps(ingredientMaps);
-
         fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
         fragmentIngredientBinding.ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -124,12 +125,10 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
                 //map date 변경
                 ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
 
-                for(String oneIngredientText: ingredientList) {
-                    HashMap<String, Object> ingredientHashMap = new HashMap<>();
-                    ingredientHashMap.put("ingredient", oneIngredientText);
-                    ingredientHashMap.put("date", date);
-                    ingredientMaps.add(ingredientHashMap);
-                }
+                HashMap<String, Object> ingredientHashMap = new HashMap<>();
+                ingredientHashMap.replace("date", date);
+                ingredientMaps.add(ingredientHashMap);
+
                 ingredientAdapter.setIngredientMaps(ingredientMaps);
                 ingredientAdapter.notifyDataSetChanged();
 

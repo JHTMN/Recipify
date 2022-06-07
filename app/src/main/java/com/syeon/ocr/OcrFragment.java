@@ -57,7 +57,7 @@ public class OcrFragment extends Fragment {
     //Functions
     private FirebaseFunctions mFunctions;
 
-    HashMap<String, Object> ingredientMap;
+    private HashMap<String, Object> ingredientMap;
 
     interface OcrFragmentListener{
         void ocrSuccess(ArrayList<String> textList); //인식된 식재료를 넘기기 위해
@@ -348,11 +348,10 @@ public class OcrFragment extends Fragment {
                                     startCam();
                                 } else {
                                     // Task completed successfully
-                                    //인식된 텍스트를 text 필드에 저장
                                     if (task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation") != null) {
                                         JsonObject annotation = task.getResult().getAsJsonArray().get(0).getAsJsonObject().get("fullTextAnnotation").getAsJsonObject();
                                         ocrFragmentListener.ocrSuccess(checkIngredients(getOCRIngredientList(annotation)));
-                                        Log.d("IngredientList", checkIngredients(getOCRIngredientList(annotation)).toString());
+                                        //Log.d("IngredientList", checkIngredients(getOCRIngredientList(annotation)).toString());
                                         Toast.makeText(requireContext(), checkIngredients(getOCRIngredientList(annotation)).toString(), Toast.LENGTH_LONG)
                                                 .show();
                                     } else {
@@ -460,13 +459,13 @@ public class OcrFragment extends Fragment {
     }
 
     //영수증 text와 식재료값 비교
-    private void checkIngredient(ArrayList<String> checkList, String ingredient){
-        for(int j=0; j<ingredient.length(); j++) {
-            for(int i=j+1; i<=ingredient.length(); i++){
+    private void checkIngredient(ArrayList<String> ingredientList, String ingredient){
+        for(int j = 0; j < ingredient.length(); j++) {
+            for(int i = j + 1; i <= ingredient.length(); i++){
                 ingredient.substring(j,i);
                 if(ingredientMap.containsKey(ingredient.substring(j,i))){
-                    checkList.add(ingredient.substring(j,i));
-                    checkIngredient(checkList, ingredient.substring(i));
+                    ingredientList.add(ingredient.substring(j,i));
+                    checkIngredient(ingredientList, ingredient.substring(i));
                     return;
                 }
             }
