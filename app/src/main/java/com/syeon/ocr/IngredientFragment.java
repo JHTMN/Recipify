@@ -27,14 +27,17 @@ import java.util.HashMap;
 
 
 public class IngredientFragment extends Fragment implements ItemTouchHelperListener, CalenderListener{
-    private static final String TAG = "IngredientFragment";
-    private FragmentIngredientBinding fragmentIngredientBinding;
-    private IngredientAdapter ingredientAdapter = new IngredientAdapter();;
 
-    Context context;
+    private FragmentIngredientBinding fragmentIngredientBinding;
+
+    private IngredientAdapter ingredientAdapter = new IngredientAdapter();
+
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private ArrayList<HashMap<String, Object>> ingredientMaps = new ArrayList<>();
+
+    private ArrayList<String> ingredientList;
+
     private ItemTouchHelperCallback itemTouchHelperCallback;
     private MaterialDatePicker datePicker;
     private SimpleDateFormat simpleDateFormat;
@@ -44,10 +47,10 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         // Required empty public constructor
     }
 
-    public static IngredientFragment newInstance() { //(ArrayList<String> ingredientList) {
+    public static IngredientFragment newInstance(ArrayList<String> ingredientList) {
         IngredientFragment fragment = new IngredientFragment();
         Bundle args = new Bundle();
-//        args.putSerializable("ingredientList", ingredientList); //OCR에서 받아온 ingredientList
+        args.putSerializable("ingredientList", ingredientList); //OCR에서 받아온 ingredientList
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,10 +88,20 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     public void onStart() {
         super.onStart();
 
+        ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
+        for(String oneIngredientText: ingredientList) {
+            HashMap<String, Object> ingredientHashMap = new HashMap<>();
+            ingredientHashMap.put("ingredient", oneIngredientText);
+            ingredientHashMap.put("date", "00/00/00");
+            ingredientMaps.add(ingredientHashMap);
+        }
+
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(fragmentIngredientBinding.ingredientRecyclerView);
 
         //recyclerView, Adapter
+        ingredientAdapter.setIngredientMaps(ingredientMaps);
+
         fragmentIngredientBinding.ingredientRecyclerView.setAdapter(ingredientAdapter);
         fragmentIngredientBinding.ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -108,7 +121,7 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
             public void onPositiveButtonClick(Object selection) {
                 String date = simpleDateFormat.format(selection);
 
-                /*//map date 변경
+                //map date 변경
                 ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
 
                 for(String oneIngredientText: ingredientList) {
@@ -117,8 +130,8 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
                     ingredientHashMap.put("date", date);
                     ingredientMaps.add(ingredientHashMap);
                 }
-                //ingredientAdapter.setIngredientMaps(ingredientMaps);
-                //ingredientAdapter.notifyDataSetChanged();*/
+                ingredientAdapter.setIngredientMaps(ingredientMaps);
+                ingredientAdapter.notifyDataSetChanged();
 
                 Toast.makeText(getContext(), "selection " + date, Toast.LENGTH_SHORT).show();
             }

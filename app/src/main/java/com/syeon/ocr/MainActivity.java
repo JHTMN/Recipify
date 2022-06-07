@@ -75,9 +75,7 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
             } else { //식재료 값이 있을 경우 ingredientFragment 열기
-                activityMainBinding.noteView.setVisibility(View.VISIBLE);
                 activityMainBinding.OCRBtn.setVisibility(View.VISIBLE);
-
                 IngredientAddFragment ingredientAddFragment = IngredientAddFragment.newInstance(ingredientList);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ingredientAddFragment, "OcrFragment")
@@ -91,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         activityMainBinding.OCRBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activityMainBinding.noteView.setVisibility(GONE);
                 activityMainBinding.OCRBtn.setVisibility(GONE);
                 OcrFragment ocrFragment = OcrFragment.newInstance();
                 ocrFragment.setOcrFragmentListener(MainActivity.this::ocrSuccess);

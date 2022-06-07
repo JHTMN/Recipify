@@ -42,14 +42,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
         String ingredient = (String) ingredientHashMap.get("ingredient");
         ingredientViewholder.ingredientText.setText(ingredient);
-        ingredientViewholder.ingredientText.setText(ingredient);
-
-        /*ingredientViewholder.date.setOnClickListener(new View.OnClickListener() {
+        ingredientViewholder.date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 calenderListener.calender(position);
             }
-        });*/
+        });
     }
 
     @Override
@@ -63,8 +61,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            ingredientText = itemView.findViewById(R.id.inputToDo);
-            //date = itemView.findViewById(R.id.date_text_view);
+            ingredientText = itemView.findViewById(R.id.ingredient_check_box);
+            date = itemView.findViewById(R.id.date_text_view);
 
         }
 
