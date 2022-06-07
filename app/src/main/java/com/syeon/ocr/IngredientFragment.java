@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,8 +60,28 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                setEnabled(false);
+                getActivity().onBackPressed();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this,
+                onBackPressedCallback);
+
         itemTouchHelperCallback = new ItemTouchHelperCallback(this);
         simpleDateFormat = new SimpleDateFormat("yy/MM/dd");
+
+        ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
+        for(String oneIngredientText: ingredientList) {
+            HashMap<String, Object> ingredientHashMap = new HashMap<>();
+            ingredientHashMap.put("ingredient", oneIngredientText);
+            ingredientHashMap.put("date", "00/00/00");
+            ingredientMaps.add(ingredientHashMap);
+        }
+
     }
 
     @Override
@@ -87,13 +108,6 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     public void onStart() {
         super.onStart();
 
-        ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
-        for(String oneIngredientText: ingredientList) {
-            HashMap<String, Object> ingredientHashMap = new HashMap<>();
-            ingredientHashMap.put("ingredient", oneIngredientText);
-            ingredientHashMap.put("date", "00/00/00");
-            ingredientMaps.add(ingredientHashMap);
-        }
 
         //adapter에 Map set
         ingredientAdapter.setIngredientMaps(ingredientMaps);
@@ -123,13 +137,8 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
                 String date = simpleDateFormat.format(selection);
 
                 //map date 변경
-                ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
+                ingredientMaps.get(position).put("date", date);
 
-                HashMap<String, Object> ingredientHashMap = new HashMap<>();
-                ingredientHashMap.replace("date", date);
-                ingredientMaps.add(ingredientHashMap);
-
-                ingredientAdapter.setIngredientMaps(ingredientMaps);
                 ingredientAdapter.notifyDataSetChanged();
 
                 Toast.makeText(getContext(), "selection " + date, Toast.LENGTH_SHORT).show();

@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         }
     }
 
-
     //카메라 권한 설정
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
                 getSupportFragmentManager().beginTransaction().remove(frag).commit();
                 activityMainBinding.OCRBtn.setVisibility(GONE);
                 OcrFragment ocrFragment = OcrFragment.newInstance();
-                ocrFragment.setOcrFragmentListener(MainActivity.this::ocrSuccess);
+                ocrFragment.setOcrFragmentListener(MainActivity.this);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
@@ -78,11 +77,17 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
                 activityMainBinding.OCRBtn.setVisibility(View.VISIBLE);
                 IngredientAddFragment ingredientAddFragment = IngredientAddFragment.newInstance(ingredientList);
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientAddFragment, "OcrFragment")
+                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientAddFragment, "IngredientAddFragment")
+                        .addToBackStack("IngredientAddFragment")
                         .commit();
             }
         }
     }
+
+    public void ocrVisibleView() {
+        activityMainBinding.OCRBtn.setVisibility(View.VISIBLE);
+    }
+
 
 
     private void startOCRbtn(){
@@ -91,9 +96,10 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
             public void onClick(View view) {
                 activityMainBinding.OCRBtn.setVisibility(GONE);
                 OcrFragment ocrFragment = OcrFragment.newInstance();
-                ocrFragment.setOcrFragmentListener(MainActivity.this::ocrSuccess);
+                ocrFragment.setOcrFragmentListener(MainActivity.this);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
+                        .addToBackStack("OcrFragment")
                         .commit();
             }
         });

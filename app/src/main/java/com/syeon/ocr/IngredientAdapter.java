@@ -48,6 +48,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 calenderListener.calender(position);
             }
         });
+        String date = (String) ingredientHashMap.get("date");
+        ingredientViewholder.date.setText(date);
     }
 
     @Override

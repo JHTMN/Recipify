@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.camera.core.*;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 
@@ -61,6 +63,7 @@ public class OcrFragment extends Fragment {
 
     interface OcrFragmentListener{
         void ocrSuccess(ArrayList<String> textList); //인식된 식재료를 넘기기 위해
+        void ocrVisibleView();
     }
     public void setOcrFragmentListener(OcrFragmentListener ocrFragmentListener){
         this.ocrFragmentListener = ocrFragmentListener;
@@ -83,15 +86,18 @@ public class OcrFragment extends Fragment {
         if (getArguments() != null) {
         }
         cameraExecutor = ContextCompat.getMainExecutor(requireContext());
-        cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
-                // 1.Cloud Functions 인스턴스 초기화
-        mFunctions = FirebaseFunctions.getInstance();
+
         ingredientMap = new HashMap<String, Object>();
-        try {
-            readDataFromCsv("./drop_duplicates_ingre.csv");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                ocrFragmentListener.ocrVisibleView();
+                setEnabled(false);
+                getActivity().onBackPressed();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
 
         ingredientMap.put("떡", 0);
         ingredientMap.put("간장", 1);
@@ -209,35 +215,91 @@ public class OcrFragment extends Fragment {
         ingredientMap.put("올리브", 113);
         ingredientMap.put("케이퍼", 114);
         ingredientMap.put("화이트와인", 115);
-        ingredientMap.put("바나나", 116);
-        ingredientMap.put("", 117);
-        ingredientMap.put("", 118);
-        ingredientMap.put("", 119);
-        ingredientMap.put("", 120);
-        ingredientMap.put("", 121);
-        ingredientMap.put("", 122);
-        ingredientMap.put("", 123);
-        ingredientMap.put("", 124);
-        ingredientMap.put("", 125);
-        ingredientMap.put("", 126);
-        ingredientMap.put("", 127);
-        ingredientMap.put("", 128);
-        ingredientMap.put("", 129);
-        ingredientMap.put("", 130);
-        ingredientMap.put("", 131);
-        ingredientMap.put("", 132);
-        ingredientMap.put("", 133);
-        ingredientMap.put("", 134);
-        ingredientMap.put("", 135);
-        ingredientMap.put("", 136);
-        ingredientMap.put("", 137);
-        ingredientMap.put("", 138);
-        ingredientMap.put("", 139);
-        ingredientMap.put("", 140);
-
-
-
-
+        ingredientMap.put("꼬치", 116);
+        ingredientMap.put("꿀", 117);
+        ingredientMap.put("느타리버섯", 118);
+        ingredientMap.put("배즙", 119);
+        ingredientMap.put("생강즙", 120);
+        ingredientMap.put("토마토케첩", 121);
+        ingredientMap.put("콩가루", 122);
+        ingredientMap.put("생강", 123);
+        ingredientMap.put("배추", 124);
+        ingredientMap.put("연겨자", 125);
+        ingredientMap.put("파프리카", 126);
+        ingredientMap.put("실고추", 127);
+        ingredientMap.put("우엉", 128);
+        ingredientMap.put("다진양파", 129);
+        ingredientMap.put("토마토", 130);
+        ingredientMap.put("갈치", 131);
+        ingredientMap.put("닭고기", 132);
+        ingredientMap.put("들깨", 133);
+        ingredientMap.put("초고추장", 134);
+        ingredientMap.put("칼국수", 135);
+        ingredientMap.put("무명실", 136);
+        ingredientMap.put("양배추", 137);
+        ingredientMap.put("파슬리가루", 138);
+        ingredientMap.put("목이버섯", 139);
+        ingredientMap.put("생선살", 140);
+        ingredientMap.put("파인애플", 141);
+        ingredientMap.put("양파즙", 142);
+        ingredientMap.put("월계수잎", 143);
+        ingredientMap.put("통깨", 144);
+        ingredientMap.put("레드와인", 145);
+        ingredientMap.put("버터", 146);
+        ingredientMap.put("빵가루", 147);
+        ingredientMap.put("은행", 148);
+        ingredientMap.put("갓", 149);
+        ingredientMap.put("굴", 150);
+        ingredientMap.put("된장", 151);
+        ingredientMap.put("새우젓", 152);
+        ingredientMap.put("젓국", 153);
+        ingredientMap.put("김칫국물", 154);
+        ingredientMap.put("청국장", 155);
+        ingredientMap.put("바지락", 156);
+        ingredientMap.put("순두부", 157);
+        ingredientMap.put("동태", 158);
+        ingredientMap.put("가래떡", 159);
+        ingredientMap.put("유부", 160);
+        ingredientMap.put("단무지", 161);
+        ingredientMap.put("게맛살", 162);
+        ingredientMap.put("해파리", 163);
+        ingredientMap.put("멸치젓", 164);
+        ingredientMap.put("총각무", 165);
+        ingredientMap.put("배주머니", 166);
+        ingredientMap.put("꽃게", 167);
+        ingredientMap.put("다시다", 168);
+        ingredientMap.put("싸리버섯", 169);
+        ingredientMap.put("아귀", 170);
+        ingredientMap.put("조기", 171);
+        ingredientMap.put("명란", 172);
+        ingredientMap.put("쑥갓", 173);
+        ingredientMap.put("쌀뜨물", 174);
+        ingredientMap.put("우거지", 175);
+        ingredientMap.put("곤약", 176);
+        ingredientMap.put("어묵", 177);
+        ingredientMap.put("팽이버섯", 178);
+        ingredientMap.put("낙지", 179);
+        ingredientMap.put("선지", 180);
+        ingredientMap.put("김", 181);
+        ingredientMap.put("장조림", 182);
+        ingredientMap.put("양", 183);
+        ingredientMap.put("도가니", 184);
+        ingredientMap.put("밀국수", 185);
+        ingredientMap.put("사골", 186);
+        ingredientMap.put("쇠뼈", 187);
+        ingredientMap.put("까나리액젓", 188);
+        ingredientMap.put("석이버섯", 189);
+        ingredientMap.put("연근", 190);
+        ingredientMap.put("조갯살", 191);
+        ingredientMap.put("냉이", 192);
+        ingredientMap.put("더덕", 193);
+        ingredientMap.put("꽈리고추", 194);
+        ingredientMap.put("마른오징어", 195);
+        ingredientMap.put("메주콩", 196);
+        ingredientMap.put("칵테일새우", 197);
+        ingredientMap.put("고추냉이", 198);
+        ingredientMap.put("참치", 199);
+        ingredientMap.put("꽁치", 200);
     }
 
     @Override
@@ -251,7 +313,13 @@ public class OcrFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
+        // 1.Cloud Functions 인스턴스 초기화
+        mFunctions = FirebaseFunctions.getInstance();
+
         startCam();
+
         fragmentOcrBinding.clickBtn.setOnClickListener(onClickListener);
     }
 
