@@ -35,13 +35,6 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         View view = activityMainBinding.getRoot();
         setContentView(view);
 
-        /*//getSupportFragmentManager 을 이용하여 이전에 만들었던 **FrameLayout**에 `fragment_main.xml`이 추가
-        IngredientFragment mainFragment = IngredientFragment.newInstance();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, mainFragment)
-                .commit();*/
-
-
         //카메라 권한 설정
         if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
             startOCRbtn(); //권한설정돼있다면 OCR 프래그먼트 열기
@@ -49,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
             requestPermissions(new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_PERMISSIONS);
         }
     }
-
 
 
     //카메라 권한 설정
@@ -68,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+
 
     public void ocrSuccess(ArrayList<String> ingredientList) {
         Fragment frag = (OcrFragment) getSupportFragmentManager().findFragmentByTag("OcrFragment");
@@ -91,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
                         .commit();
             }
         }
-
     }
 
 
@@ -109,5 +101,7 @@ public class MainActivity extends AppCompatActivity implements OcrFragment.OcrFr
             }
         });
     }
+
+
 
 }

@@ -28,9 +28,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
 import com.syeon.ocr.databinding.FragmentOcrBinding;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,10 +87,156 @@ public class OcrFragment extends Fragment {
                 // 1.Cloud Functions 인스턴스 초기화
         mFunctions = FirebaseFunctions.getInstance();
         ingredientMap = new HashMap<String, Object>();
+        try {
+            readDataFromCsv("./drop_duplicates_ingre.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         ingredientMap.put("떡", 0);
-        ingredientMap.put("바나나", 1);
-        ingredientMap.put("우유", 2);
-        ingredientMap.put("햄", 3);
+        ingredientMap.put("간장", 1);
+        ingredientMap.put("계란", 2);
+        ingredientMap.put("고사리", 3);
+        ingredientMap.put("고추장", 4);
+        ingredientMap.put("다진마늘", 5);
+        ingredientMap.put("다진파", 6);
+        ingredientMap.put("도라지", 7);
+        ingredientMap.put("돼지고기", 8);
+        ingredientMap.put("묵", 9);
+        ingredientMap.put("미나리", 10);
+        ingredientMap.put("설탕", 11);
+        ingredientMap.put("소금", 12);
+        ingredientMap.put("쇠고기", 13);
+        ingredientMap.put("숙주", 14);
+        ingredientMap.put("쌀", 15);
+        ingredientMap.put("참기름", 16);
+        ingredientMap.put("콩나물", 17);
+        ingredientMap.put("멥쌀", 18);
+        ingredientMap.put("수수", 19);
+        ingredientMap.put("차조", 20);
+        ingredientMap.put("찹쌀", 21);
+        ingredientMap.put("콩", 22);
+        ingredientMap.put("팥", 23);
+        ingredientMap.put("고추", 24);
+        ingredientMap.put("당근", 25);
+        ingredientMap.put("당면", 26);
+        ingredientMap.put("밥", 27);
+        ingredientMap.put("부추", 28);
+        ingredientMap.put("표고버섯", 29);
+        ingredientMap.put("호박", 30);
+        ingredientMap.put("후춧가루", 31);
+        ingredientMap.put("고춧가루", 32);
+        ingredientMap.put("깨소금", 33);
+        ingredientMap.put("마늘", 34);
+        ingredientMap.put("파", 35);
+        ingredientMap.put("계피", 36);
+        ingredientMap.put("대추", 37);
+        ingredientMap.put("물엿", 38);
+        ingredientMap.put("밤", 39);
+        ingredientMap.put("식용유", 40);
+        ingredientMap.put("잣", 41);
+        ingredientMap.put("흑임자", 42);
+        ingredientMap.put("감자", 43);
+        ingredientMap.put("양파", 44);
+        ingredientMap.put("완두콩", 45);
+        ingredientMap.put("우유", 46);
+        ingredientMap.put("카레가루", 47);
+        ingredientMap.put("다시마", 48);
+        ingredientMap.put("멸치", 49);
+        ingredientMap.put("쌈장", 50);
+        ingredientMap.put("오이", 51);
+        ingredientMap.put("전분", 52);
+        ingredientMap.put("피망", 53);
+        ingredientMap.put("밀가루", 54);
+        ingredientMap.put("실파", 55);
+        ingredientMap.put("애호박", 56);
+        ingredientMap.put("양념장", 57);
+        ingredientMap.put("냉면", 58);
+        ingredientMap.put("동치미국물", 59);
+        ingredientMap.put("동치미무", 60);
+        ingredientMap.put("배", 61);
+        ingredientMap.put("쇠고기육수", 62);
+        ingredientMap.put("식초", 63);
+        ingredientMap.put("국수", 64);
+        ingredientMap.put("겨자", 65);
+        ingredientMap.put("다진생강", 66);
+        ingredientMap.put("대파", 67);
+        ingredientMap.put("열무", 68);
+        ingredientMap.put("찹쌀가루", 69);
+        ingredientMap.put("깻잎", 70);
+        ingredientMap.put("상추", 71);
+        ingredientMap.put("계란흰자", 72);
+        ingredientMap.put("녹말", 73);
+        ingredientMap.put("멸칫국물", 74);
+        ingredientMap.put("새우", 75);
+        ingredientMap.put("오징어", 76);
+        ingredientMap.put("죽순", 77);
+        ingredientMap.put("청주", 78);
+        ingredientMap.put("홍합", 79);
+        ingredientMap.put("김치", 80);
+        ingredientMap.put("두부", 81);
+        ingredientMap.put("만두피", 82);
+        ingredientMap.put("육수", 83);
+        ingredientMap.put("모시조개", 84);
+        ingredientMap.put("북어", 85);
+        ingredientMap.put("무", 86);
+        ingredientMap.put("미역", 87);
+        ingredientMap.put("생태", 88);
+        ingredientMap.put("레몬즙", 89);
+        ingredientMap.put("모듬채소", 90);
+        ingredientMap.put("방울토마토", 91);
+        ingredientMap.put("양송이버섯", 92);
+        ingredientMap.put("연어", 93);
+        ingredientMap.put("올리브유", 94);
+        ingredientMap.put("차이브", 95);
+        ingredientMap.put("페스토소스", 96);
+        ingredientMap.put("가리비", 97);
+        ingredientMap.put("가재새우", 98);
+        ingredientMap.put("꼴뚜기", 99);
+        ingredientMap.put("루콜라", 100);
+        ingredientMap.put("문어", 101);
+        ingredientMap.put("샐러리", 102);
+        ingredientMap.put("소스", 103);
+        ingredientMap.put("쭈꾸미", 104);
+        ingredientMap.put("참소라살", 105);
+        ingredientMap.put("트레비스", 106);
+        ingredientMap.put("재첩", 107);
+        ingredientMap.put("계란노른자", 108);
+        ingredientMap.put("도미", 109);
+        ingredientMap.put("바질", 110);
+        ingredientMap.put("스위트마조람", 111);
+        ingredientMap.put("오레가노", 112);
+        ingredientMap.put("올리브", 113);
+        ingredientMap.put("케이퍼", 114);
+        ingredientMap.put("화이트와인", 115);
+        ingredientMap.put("", 116);
+        ingredientMap.put("", 117);
+        ingredientMap.put("", 118);
+        ingredientMap.put("", 119);
+        ingredientMap.put("", 120);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 12);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+        ingredientMap.put("", 13);
+
+
+
 
     }
 
@@ -321,5 +472,17 @@ public class OcrFragment extends Fragment {
             }
         }
     }
+
+    private void readDataFromCsv(String filePath) throws IOException {
+        CSVReader reader = new CSVReader(new FileReader(filePath)); // 1
+        String [] nextLine;
+        while ((nextLine = reader.readNext()) != null) {   // 2
+            for (int i = 0; i < nextLine.length; i++) {
+                System.out.println(i + " " + nextLine[i]);
+            }
+            System.out.println();
+        }
+    }
+
 
 }

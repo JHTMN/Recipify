@@ -29,13 +29,12 @@ import java.util.HashMap;
 public class IngredientFragment extends Fragment implements ItemTouchHelperListener, CalenderListener{
     private static final String TAG = "IngredientFragment";
     private FragmentIngredientBinding fragmentIngredientBinding;
-    private NoteAdapter ingredientAdapter = new NoteAdapter();;
+    private IngredientAdapter ingredientAdapter = new IngredientAdapter();;
 
     Context context;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-
-    private ArrayList<Note> ingredientMaps = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> ingredientMaps = new ArrayList<>();
     private ItemTouchHelperCallback itemTouchHelperCallback;
     private MaterialDatePicker datePicker;
     private SimpleDateFormat simpleDateFormat;
@@ -69,14 +68,11 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         fragmentIngredientBinding = FragmentIngredientBinding
                 .inflate(inflater, container, false);
 
-        loadNoteListData();
-
         //당겨서 새로고침
         swipeRefreshLayout = (SwipeRefreshLayout) fragmentIngredientBinding.refreshLayout;
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadNoteListData();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -88,18 +84,7 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
     @Override
     public void onStart() {
         super.onStart();
-        /*
-        //loadNoteListDate()로 이동
-        ingredientList = (ArrayList) getArguments().getSerializable("ingredientList");
-        for(String oneIngredientText: ingredientList) {
-            HashMap<String, Object> ingredientHashMap = new HashMap<>();
-            ingredientHashMap.put("ingredient", oneIngredientText);
-            ingredientHashMap.put("date", "00/00/00");
-            ingredientMaps.add(ingredientHashMap);
-        }
 
-        ingredientAdapter.setItems(ingredientMaps);
-        ingredientAdapter.setItems(this::calender);*/
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
         itemTouchHelper.attachToRecyclerView(fragmentIngredientBinding.ingredientRecyclerView);
 
@@ -140,42 +125,6 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
         });
     }
 
-
-    @SuppressLint("Range")
-    public int loadNoteListData(){
-
-        //데이터를 가져오는 sql문 select... (id의 역순으로 정렬)
-        String loadSql = "select _id, TODO from " + NoteDatabase.TABLE_NOTE + " order by _id desc";
-
-        int recordCount = -1;
-        NoteDatabase database = NoteDatabase.getInstance(context);
-
-        if(database != null){
-            //cursor를 객체화하여 rawQuery문 저장
-            Cursor outCursor = database.rawQuery(loadSql);
-
-            recordCount = outCursor.getCount();
-
-            //_id, TODO가 담겨질 배열 생성
-            ArrayList<Note> items = new ArrayList<>();
-
-            //for문을 통해 하나하나 추가
-            for(int i = 0; i < recordCount; i++){
-                outCursor.moveToNext();
-
-                int _id = outCursor.getInt(0);
-                String todo = outCursor.getString(1);
-                items.add(new Note(_id,todo));
-            }
-            outCursor.close();
-
-            //어댑터에 연결 및 데이터셋 변경
-            ingredientAdapter.setItems(items);
-            ingredientAdapter.notifyDataSetChanged();
-        }
-
-        return recordCount;
-    }
 
     @Override
     public boolean onItemMove(int from_position, int to_position) {

@@ -1,5 +1,7 @@
 package com.syeon.ocr;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -21,18 +23,13 @@ import java.util.HashMap;
 
 public class IngredientAddFragment extends Fragment {
 
-    private static final String TAG = "MainActivity";
-    Context context;
-    public static NoteDatabase noteDatabase = null;
-
     private FragmentIngredientAddBinding fragmentIngredientAddBinding;
 
     private ArrayList<HashMap<String, Object>> ingredientMaps = new ArrayList<>();
     private ArrayList<String> ingredientList;
 
-    private IngredientAddAdapter ingredientAddAdapter = new IngredientAddAdapter();
-
-
+    public static NoteDatabase noteDatabase = null;
+    Context context;
 
     public IngredientAddFragment() {
         // Required empty public constructor
@@ -50,6 +47,65 @@ public class IngredientAddFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+        }
+
+        fragmentIngredientAddBinding.saveBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                saveToDo();
+
+                IngredientFragment ingredientFragment = IngredientFragment.newInstance();
+                FragmentManager fragmentManager = getParentFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment)
+                        .commit();
+            }
+        });
+        openDatabase();
+
+    }
+
+
+    private void saveToDo(){
+
+        //EditText에 적힌 글을 가져오기
+        String todo = fragmentIngredientAddBinding.inputToDo.getText().toString();
+
+        //테이블에 값을 추가하는 sql구문 insert...
+        String sqlSave = "insert into " + NoteDatabase.TABLE_NOTE + " (TODO) values (" +
+                "'" + todo + "')";
+
+        //sql문 실행
+        NoteDatabase database = NoteDatabase.getInstance(context);
+        database.execSQL(sqlSave);
+
+        //저장과 동시에 EditText 안의 글 초기화
+        fragmentIngredientAddBinding.inputToDo.setText("");
+    }
+
+    public void openDatabase() {
+        // open database
+        if (noteDatabase != null) {
+            noteDatabase.close();
+            noteDatabase = null;
+        }
+
+        //this --> getContext
+        noteDatabase = NoteDatabase.getInstance(getContext());
+        boolean isOpen = noteDatabase.open();
+        if (isOpen) {
+            Log.d(TAG, "Note database is open.");
+        } else {
+            Log.d(TAG, "Note database is not open.");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (noteDatabase != null) {
+            noteDatabase.close();
+            noteDatabase = null;
         }
     }
 
@@ -73,23 +129,7 @@ public class IngredientAddFragment extends Fragment {
             ingredientHashMap.put("date", "00/00/00");
             ingredientMaps.add(ingredientHashMap);
         }
-        ingredientAddAdapter.setIngredientMaps(ingredientMaps);
-        fragmentIngredientAddBinding.ingredientRecyclerView.setAdapter(ingredientAddAdapter);
-        fragmentIngredientAddBinding.ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        startSaveBtn();
-
     }
 
-    private void startSaveBtn() {
-        fragmentIngredientAddBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                IngredientFragment ingredientFragment = IngredientFragment.newInstance();
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment)
-                        .commit();
-            }
-        });
-    }
 
 }

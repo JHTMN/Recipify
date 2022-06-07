@@ -5,18 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".IngredientAddFragment">
 
-   <androidx.recyclerview.widget.RecyclerView
-       android:id="@+id/ingredient_recycler_view"
+   <com.google.android.material.textfield.MaterialAutoCompleteTextView
+       android:id="@+id/inputToDo"
        android:layout_width="match_parent"
-       android:layout_height="match_parent">
-   </androidx.recyclerview.widget.RecyclerView>
+       android:layout_height="wrap_content"
+       android:layout_margin="8dp"/>
 
    <com.google.android.material.button.MaterialButton
        android:id="@+id/save_btn"
+       android:textSize="20dp"
+       android:textColor="@color/blue_700"
+       android:layout_gravity="center_horizontal|bottom"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_gravity="bottom|center"
        android:text="저장"
-      ></com.google.android.material.button.MaterialButton>
+       ></com.google.android.material.button.MaterialButton>
 
 </FrameLayout>

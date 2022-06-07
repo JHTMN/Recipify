@@ -19,9 +19,6 @@ import java.util.HashMap;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
-    //todolist아이템이 들어갈 배열
-    ArrayList<Note> items = new ArrayList<>();
-
     private ArrayList<HashMap<String, Object>> ingredientMaps;
 
     private CalenderListener calenderListener;
@@ -42,10 +39,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder ingredientViewholder, @SuppressLint("RecyclerView") int position) {
 
-        Note item = items.get(position);
-        ingredientViewholder.setItem(item);
-        ingredientViewholder.setLayout();
-
         HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
         String ingredient = (String) ingredientHashMap.get("ingredient");
         ingredientViewholder.ingredientText.setText(ingredient);
@@ -61,64 +54,21 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return ingredientMaps.size();
     }
 
     public class IngredientViewHolder extends RecyclerView.ViewHolder {
         TextView date;
-
-        TextView ingredientText;
-        LinearLayout layoutTodo;
-        CheckBox checkBox;
-        Button deleteButton;
+        CheckBox ingredientText;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            //ingredientText = itemView.findViewById(R.id.ingredient_text_view);
+            ingredientText = itemView.findViewById(R.id.inputToDo);
             //date = itemView.findViewById(R.id.date_text_view);
-            layoutTodo = itemView.findViewById(R.id.layoutTodo);
-            checkBox = itemView.findViewById(R.id.checkBox);
-            deleteButton = itemView.findViewById(R.id.deleteButton);
-
-            //버튼 클릭 시 SQLite에서 데이터 삭제
-            deleteButton.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    //CheckBox의 String 가져오기
-                    String TODO = (String) checkBox.getText();
-                    deleteToDo(TODO);
-                    Toast.makeText(v.getContext(),"삭제되었습니다.",Toast.LENGTH_SHORT).show();
-                }
-
-                Context context;
-
-                private void deleteToDo(String TODO){
-                    //테이블을 삭제하는 sql문 delete...
-                    String deleteSql = "delete from " + NoteDatabase.TABLE_NOTE + " where " + "  TODO = '" + TODO+"'";
-                    NoteDatabase database = NoteDatabase.getInstance(context);
-                    //삭제하는 sql문 실행
-                    database.execSQL(deleteSql);
-                }
-            });
-
 
         }
-        //EditText에서 입력받은 checkBox의 텍스트를 checkBox의 Text에 넣을 수 있게 하는 메서드
-        public void setItem(Note item){
-            checkBox.setText(item.getTodo());
-        }
 
-        //아이템들을 담은 LinearLayout을 보여주게하는 메서드
-        public void setLayout(){
-            layoutTodo.setVisibility(View.VISIBLE);
-        }
     }
-
-    /*public void setItems(ArrayList<Note> items){
-        this.items = items;
-    }*/
-
 
     public void setIngredientMaps(ArrayList<HashMap<String, Object>> ingredientMaps){
         this.ingredientMaps = ingredientMaps;
