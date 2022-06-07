@@ -19,12 +19,16 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="15dp"
+            android:stateListAnimator="@null"
             android:hint="검색어를 입력하세요."/>
 
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_margin="20dp"
+            android:divider="#ffffff"
+            android:stateListAnimator="@null"/>
 
     </LinearLayout>
 

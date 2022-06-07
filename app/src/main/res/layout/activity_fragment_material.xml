@@ -14,7 +14,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="105dp"
         android:layout_marginRight="15sp"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="#5F616A"
         android:visibility="invisible"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,7 +24,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginRight="15dp"
         android:layout_marginBottom="45sp"
-        android:backgroundTint="#4CAF50">
+        android:backgroundTint="#5F616A">
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 

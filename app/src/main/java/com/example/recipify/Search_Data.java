@@ -35,4 +35,8 @@ public class Search_Data {
     public String recipeImage() { return recipeImage; }
     public String cookingDC() { return cookingDC; }
 
+    public Search_Data(String inputnamed) {
+        recipeName = inputnamed;
+    }
+
 }

@@ -31,7 +31,7 @@ public class Login extends AppCompatActivity {
 
         // Retrofit 객체 생성
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://d9cb-203-230-13-202.jp.ngrok.io")
+                .baseUrl("https://527b-203-230-13-202.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -71,6 +71,10 @@ public class Login extends AppCompatActivity {
                     public void onResponse(Call<Check> call, Response<Check> response) {
                         if(response.isSuccessful()) {
                             Intent intent = new Intent( Login.this, NaviBar.class);
+
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                             startActivity(intent);
                         }
                     }

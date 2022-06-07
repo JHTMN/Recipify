@@ -20,6 +20,7 @@
 
     <ImageView
         android:id="@+id/imageView"
+        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -28,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            android:textColor="#4CAF50"
+            android:textColor="#5F616A"
             android:layout_margin="15px"
             android:hint="메뉴명" />
 
@@ -36,26 +37,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="*재료*"/>
+            android:text=" *재료*"/>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:layout_margin="15dp"
+            android:layout_margin="20dp"
             android:text="필요 재료" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="*조리 방법*"/>
+            android:text=" *조리 방법*"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ListView
                 android:id="@+id/listview"
+                android:layout_margin="15dp"
+                android:divider="#00000000"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 

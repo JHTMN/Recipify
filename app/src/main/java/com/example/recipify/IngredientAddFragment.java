@@ -1,10 +1,12 @@
 package com.example.recipify;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
@@ -68,10 +70,10 @@ public class IngredientAddFragment extends Fragment {
         fragmentIngredientAddBinding.saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IngredientFragment ingredientFragment = IngredientFragment.newInstance(textList);
-                FragmentManager fragmentManager = getParentFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.main_container, ingredientFragment)
-                        .commit();
+                Intent intent = new Intent(getActivity().getApplicationContext(), NaviBar.class);
+                startActivity(intent);
+
+                //FragmentMaterial로 이동
             }
         });
     }

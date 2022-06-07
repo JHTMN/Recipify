@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -21,6 +22,7 @@ public class NaviBar extends AppCompatActivity {
     private FragmentSearch fragmentSearch = new FragmentSearch();
     private FragmentMaterial fragmentMaterial = new FragmentMaterial();
     private FragmentFilter fragmentFilter = new FragmentFilter();
+    private long backKeyPressedTime = 0;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -56,6 +58,20 @@ public class NaviBar extends AppCompatActivity {
                     break;
             }
             return true;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish();
         }
     }
 }

@@ -21,6 +21,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +30,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FragmentSearch extends Fragment {
+
+    private ArrayList<String> arrayList;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class FragmentSearch extends Fragment {
         EditText editSearch = view.findViewById(R.id.editSearch);
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://d9cb-203-230-13-202.jp.ngrok.io")
+                .baseUrl("https://527b-203-230-13-202.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -73,6 +76,9 @@ public class FragmentSearch extends Fragment {
                 System.out.println(arrayIngre);
                 System.out.println(arrayDC);
 
+                arrayList = new ArrayList<>();
+                arrayList.addAll(arrayName);
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getApplication(), android.R.layout.simple_list_item_1, arrayName);
                 listView.setAdapter(adapter);
 
@@ -89,24 +95,24 @@ public class FragmentSearch extends Fragment {
 
                     @Override
                     public void afterTextChanged(Editable editable) {
-                        String text = editSearch.getText().toString();
+                        String text = editSearch.getText().toString()
+                                .toLowerCase(Locale.getDefault());
                         search(text);
                     }
 
                     public void search(String charText){
                         arrayName.clear();
 
-
                         if (charText.length() == 0) {
-                            arrayName.addAll(arrayName);
+                            arrayName.addAll(arrayList);
                         }
                         else
                         {
-                            for(int i = 0; i < arrayName.size(); i++)
+                            for(int i = 0; i < arrayList.size(); i++)
                             {
-                                if(arrayName.get(i).toLowerCase().contains(charText))
+                                if(arrayList.get(i).toLowerCase().contains(charText))
                                 {
-                                    arrayName.add(arrayName.get(i));
+                                    arrayName.add(arrayList.get(i));
                                 }
                             }
                         }
@@ -118,6 +124,10 @@ public class FragmentSearch extends Fragment {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(getActivity(), recipeInfo.class);
+                        int check_position = listView.getCheckedItemPosition();
+                        String vo = (String)adapterView.getAdapter().getItem(i);
+                        intent.putExtra("selectName", vo);
+
                         intent.putExtra("recipeID", arrayID.get(i));
                         intent.putExtra("recipeName", arrayName.get(i));
                         intent.putExtra("recipeIngre", arrayIngre.get(i));

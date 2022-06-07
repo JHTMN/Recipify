@@ -24,5 +24,10 @@ public interface SearchApi {
     @GET("/search")
     Call<List<Search_Data>> getData();
 
+    @Multipart
+    @POST("/search")
+    Call<List<Search_Data2>> recipeName(
+            @Part("recipeName") RequestBody recipeName);
+
 }
 
