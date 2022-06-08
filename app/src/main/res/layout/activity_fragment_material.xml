@@ -5,7 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:theme="@style/ThemeOverlay.Recipify.FullscreenContainer"
-    tools:context=".FragmentMaterial">
+    tools:context=".FragmentMaterial"
+    android:layout_weight="1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="TEST"
+        android:gravity="center"
+        android:textSize="100sp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab1"

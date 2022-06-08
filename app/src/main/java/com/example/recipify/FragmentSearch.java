@@ -43,7 +43,7 @@ public class FragmentSearch extends Fragment {
         EditText editSearch = view.findViewById(R.id.editSearch);
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://527b-203-230-13-202.jp.ngrok.io")
+                .baseUrl("https://2434-203-230-13-2.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 

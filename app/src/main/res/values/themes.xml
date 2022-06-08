@@ -29,4 +29,10 @@
         <item name="fullscreenTextColor">@color/light_blue_A200</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <style name="Theme.Recipify.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.Recipify.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.Recipify.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
