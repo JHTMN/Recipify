@@ -2,15 +2,14 @@ package com.example.recipify;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.content.Intent;
+
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,6 +22,26 @@ public class NaviBar extends AppCompatActivity {
     private FragmentMaterial fragmentMaterial = new FragmentMaterial();
     private FragmentFilter fragmentFilter = new FragmentFilter();
     private long backKeyPressedTime = 0;
+
+    public NaviBar() {
+        // Required empty public constructor
+    }
+
+
+    public static NaviBar newInstance() {
+        NaviBar naviBar = new NaviBar();
+        Bundle args = new Bundle();
+        naviBar.setArguments(args);
+        return naviBar;
+    }
+
+    private void setArguments(Bundle args) {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

@@ -65,7 +65,7 @@ public class OCRMainActivity extends AppCompatActivity implements OcrFragment.Oc
                 getSupportFragmentManager().beginTransaction().remove(frag).commit();
                 activityOcrmainBinding.OCRBtn.setVisibility(View.GONE);
                 OcrFragment ocrFragment = OcrFragment.newInstance();
-                ocrFragment.setOcrFragmentListener(OCRMainActivity.this::ocrSuccess);
+                ocrFragment.setOcrFragmentListener(OCRMainActivity.this);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();
@@ -79,11 +79,18 @@ public class OCRMainActivity extends AppCompatActivity implements OcrFragment.Oc
 
     }
 
+    public void ocrVisibleView() {
+        activityOcrmainBinding.OCRBtn.setVisibility(View.VISIBLE);
+    }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
+
+
 
     private void startOCRbtn(){
         activityOcrmainBinding.OCRBtn.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +98,7 @@ public class OCRMainActivity extends AppCompatActivity implements OcrFragment.Oc
             public void onClick(View view) {
                 activityOcrmainBinding.OCRBtn.setVisibility(View.GONE);
                 OcrFragment ocrFragment = OcrFragment.newInstance();
-                ocrFragment.setOcrFragmentListener(OCRMainActivity.this::ocrSuccess);
+                ocrFragment.setOcrFragmentListener(OCRMainActivity.this);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.main_container, ocrFragment, "OcrFragment")
                         .commit();

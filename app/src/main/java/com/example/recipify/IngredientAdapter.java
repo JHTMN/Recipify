@@ -1,8 +1,10 @@
 package com.example.recipify;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -12,10 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
-    private ArrayList<String> ingredientList;
+    private ArrayList<HashMap<String, Object>> ingredientMaps;
+
+    private CalenderListener calenderListener;
+
+    public void setCalenderListener(CalenderListener calenderListener) {
+        this.calenderListener = calenderListener;
+    }
+
 
     @NonNull
     @Override
@@ -26,33 +36,56 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IngredientViewHolder ingredientViewholder, int position) {
-        String ingredients = ingredientList.get(position);
-        ingredientViewholder.ingredientText.setText(ingredients);
+    public void onBindViewHolder(@NonNull IngredientViewHolder ingredientViewholder, @SuppressLint("RecyclerView") int position) {
 
+
+        HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
+        String ingredient = (String) ingredientHashMap.get("ingredient");
+
+        if(ingredient.contains("[")){
+            ingredient = ingredient.replaceAll("\\[", "");
+        }
+
+        if(ingredient.contains("]")){
+            ingredient = ingredient.replaceAll("\\]", "");
+        }
+
+        System.out.println("ingredientList Type is: "+ingredient);
+        System.out.println("ingredientList Type is: "+ingredient.getClass());
+
+        ingredientViewholder.ingredient.setText(ingredient);
+        ingredientViewholder.date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calenderListener.calender(position);
+            }
+        });
+        String date = (String) ingredientHashMap.get("date");
+        ingredientViewholder.date.setText(date);
     }
 
     @Override
     public int getItemCount() {
-        return ingredientList.size();
+        return ingredientMaps.size();
     }
 
-
     public class IngredientViewHolder extends RecyclerView.ViewHolder {
-        TextView ingredientText;
-        TextView date;
 
+        CheckBox ingredient;
+        TextView date;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            ingredientText = itemView.findViewById(R.id.ingredient_text_view);
+            ingredient = itemView.findViewById(R.id.ingredient_check_box);
             date = itemView.findViewById(R.id.date_text_view);
 
         }
+
     }
 
-    public void setIngredientList(ArrayList<String> ingredientList){
-        this.ingredientList = ingredientList;
+    public void setIngredientMaps(ArrayList<HashMap<String, Object>> ingredientMaps){
+        this.ingredientMaps = ingredientMaps;
     }
+
 
 }

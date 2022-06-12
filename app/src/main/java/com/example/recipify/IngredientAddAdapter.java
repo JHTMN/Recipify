@@ -12,41 +12,38 @@ import java.util.ArrayList;
 
 public class IngredientAddAdapter extends RecyclerView.Adapter<IngredientAddAdapter.IngredientAddViewHolder> {
 
-    private ArrayList<String> ingredientList;
+        private ArrayList<String> ingredientList;
 
-    @NonNull
-    @Override
-    public IngredientAddViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_add_list_view,parent,false);
-        IngredientAddViewHolder ingredientAddViewHolder = new IngredientAddViewHolder(view);
-        return ingredientAddViewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull IngredientAddViewHolder ingredientAddViewholder, int position) {
-        String ingredients = ingredientList.get(position);
-        ingredientAddViewholder.ingredientText.setText(ingredients);
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return ingredientList.size();
-    }
-
-    public class IngredientAddViewHolder extends RecyclerView.ViewHolder {
-        TextView ingredientText;
-
-        public IngredientAddViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ingredientText = itemView.findViewById(R.id.ingredient_text);
-
+        @NonNull
+        @Override
+        public IngredientAddViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ingredient_add_list_view, parent, false);
+            IngredientAddViewHolder ingredientAddViewHolder = new IngredientAddViewHolder(view);
+            return ingredientAddViewHolder;
         }
-    }
 
-    public void setIngredientList(ArrayList<String> ingredientList){
-        this.ingredientList = ingredientList;
-    }
+        @Override
+        public void onBindViewHolder(@NonNull IngredientAddViewHolder ingredientAddViewholder, int position) {
+            String ingredients = ingredientList.get(position);
+            ingredientAddViewholder.ingredientText.setText(ingredients);
+        }
 
+        @Override
+        public int getItemCount() {
+            return ingredientList.size();
+        }
+
+        public class IngredientAddViewHolder extends RecyclerView.ViewHolder {
+            TextView ingredientText;
+
+            public IngredientAddViewHolder(@NonNull View itemView) {
+                super(itemView);
+                ingredientText = itemView.findViewById(R.id.ingredient_add_text_view);
+            }
+        }
+
+        public void setIngredientList(ArrayList<String> ingredientList) {
+            this.ingredientList = ingredientList;
+        }
 
 }

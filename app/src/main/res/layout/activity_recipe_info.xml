@@ -34,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15px"
-                android:hint="메뉴명"
                 android:textColor="#5F616A"
                 android:textSize="30sp" />
 
@@ -55,7 +54,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="필요 재료"
                 android:textSize="20sp" />
 
             <View
@@ -112,7 +110,6 @@
 
                         <TextView
                             android:id="@+id/name1"
-                            android:text="1번메뉴"
                             android:gravity="center"
                             android:textSize="20sp"
                             android:layout_width="match_parent"
@@ -133,7 +130,6 @@
 
                         <TextView
                             android:id="@+id/name2"
-                            android:text="2번메뉴"
                             android:gravity="center"
                             android:textSize="20sp"
                             android:layout_width="match_parent"
@@ -154,7 +150,6 @@
 
                         <TextView
                             android:id="@+id/name3"
-                            android:text="3번메뉴"
                             android:gravity="center"
                             android:textSize="20sp"
                             android:layout_width="match_parent"
@@ -175,7 +170,6 @@
 
                         <TextView
                             android:id="@+id/name4"
-                            android:text="4번메뉴"
                             android:gravity="center"
                             android:textSize="20sp"
                             android:layout_width="match_parent"
@@ -196,7 +190,6 @@
 
                         <TextView
                             android:id="@+id/name5"
-                            android:text="5번메뉴"
                             android:gravity="center"
                             android:textSize="20sp"
                             android:layout_width="match_parent"

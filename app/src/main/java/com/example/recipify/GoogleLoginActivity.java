@@ -146,6 +146,7 @@ public class GoogleLoginActivity extends AppCompatActivity {
             Intent intent = new Intent(GoogleLoginActivity.this, OCRMainActivity.class);
             //intent.putExtra("uid", user.getUid());
             startActivity(intent);
+            finish();
         }
     }
 

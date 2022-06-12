@@ -68,7 +68,7 @@ public class recipeInfo extends AppCompatActivity {
         iv5 = findViewById(R.id.url5);
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://2434-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://2ea8-203-230-13-2.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 

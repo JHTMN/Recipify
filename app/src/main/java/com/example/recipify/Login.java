@@ -1,7 +1,6 @@
 package com.example.recipify;
 
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -22,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Login extends AppCompatActivity {
     private Button signin, loginbutton;
-    EditText id, pw;
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -31,7 +29,7 @@ public class Login extends AppCompatActivity {
 
         // Retrofit 객체 생성
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://2434-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://2ea8-203-230-13-2.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -42,8 +40,8 @@ public class Login extends AppCompatActivity {
         loginbutton = findViewById(R.id.loginbutton);
         
         //입력
-        id = findViewById(R.id.editID);
-        pw = findViewById(R.id.editPassword);
+        EditText id = findViewById(R.id.editID);
+        EditText pw = findViewById(R.id.editPassword);
 
         //회원가입 버튼 클릭시, 회원가입 페이지로 이동
         signin.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +73,14 @@ public class Login extends AppCompatActivity {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+                            IngredientAddFragment ingredientAddFragment = new IngredientAddFragment();
+                            System.out.println(id.getText().toString());
+                            Bundle bundle = new Bundle(1);
+                            bundle.putString("numid", id.getText().toString());
+                            ingredientAddFragment.setArguments(bundle);
+
                             startActivity(intent);
+
                         }
                     }
 
@@ -95,4 +100,5 @@ public class Login extends AppCompatActivity {
 
         });
     }
+
 }
