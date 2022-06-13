@@ -154,7 +154,9 @@ public class IngredientFragment extends Fragment implements ItemTouchHelperListe
 
     @Override
     public void onItemSwipe(int position) {
-        Toast.makeText(getContext(), "swipe"+position, Toast.LENGTH_SHORT).show();
+        String ingredients = ingredientList.get(position);
+
+        Toast.makeText(getContext(), "swipe" + position, Toast.LENGTH_SHORT).show();
     }
 
 }
