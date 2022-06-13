@@ -44,9 +44,9 @@
                 android:layout_height="2px"/>
 
             <TextView
+                android:id="@+id/ingre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" *재료*"
                 android:textSize="20sp" />
 
             <TextView
@@ -63,9 +63,9 @@
                 android:layout_height="2px"/>
 
             <TextView
+                android:id="@+id/num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" *조리 방법*"
                 android:textSize="20sp" />
 
             <ListView
@@ -82,9 +82,9 @@
                 android:layout_height="2px"/>
 
             <TextView
+                android:id="@+id/recom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=" 이런 레시피는 어때요?"
                 android:textSize="20sp" />
 
             <HorizontalScrollView

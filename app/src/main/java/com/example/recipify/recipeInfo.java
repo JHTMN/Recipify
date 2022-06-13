@@ -7,6 +7,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -51,6 +52,15 @@ public class recipeInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_info);
 
+        // ProgressDialog 생성
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("레시피 정보\n불러오는중");
+        dialog.show();
+
+        TextView recom = (TextView) findViewById(R.id.recom);
+        TextView ingre = (TextView) findViewById(R.id.ingre);
+        TextView num = (TextView) findViewById(R.id.num);
         TextView recipeName = (TextView) findViewById(R.id.textView);
         TextView recipeIngre = (TextView) findViewById(R.id.textView2);
         TextView name01 = (TextView) findViewById(R.id.name1);
@@ -68,7 +78,7 @@ public class recipeInfo extends AppCompatActivity {
         iv5 = findViewById(R.id.url5);
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://2ea8-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -85,6 +95,7 @@ public class recipeInfo extends AppCompatActivity {
         call.enqueue(new Callback<List<Search_Data2>>() {
             @Override
             public void onResponse(Call<List<Search_Data2>> call, Response<List<Search_Data2>> response) {
+                dialog.dismiss();
                List<Search_Data2> resource = response.body();
 
                 ArrayList<String> arrayName = new ArrayList<>();
@@ -142,7 +153,9 @@ public class recipeInfo extends AppCompatActivity {
                     System.out.println(name_1);
                     System.out.println(url_1);
 
-
+                    recom.setText("이런 레시피는 어때요?");
+                    num.setText("*조리순서");
+                    ingre.setText("*재료");
                     recipeName.setText(arrayN);
                     recipeIngre.setText(arrayIn);
                     name01.setText(name_1);
@@ -156,7 +169,7 @@ public class recipeInfo extends AppCompatActivity {
 
                     ArrayAdapter<String> adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, result);
 
-                    int totalHeight = 0;
+                    int totalHeight = 3;
                     for (int i=0; i < adapter.getCount(); i++) {
                         View listItem = adapter.getView(i, null, listView);
                         listItem.measure(0, 0);

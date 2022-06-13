@@ -1,6 +1,7 @@
 package com.example.recipify;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,6 +9,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,11 +29,14 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,14 +44,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class FragmentMaterial extends Fragment implements ItemTouchHelperListener, CalenderListener{
+public class FragmentMaterial extends Fragment implements ItemTouchHelperListener, CalenderListener, Serializable {
 
     private static Animation open, close;
     private static Boolean isFabOpen = false;
     private static FloatingActionButton fab, fab1, fab2;
     private static RecyclerView ingredientRecyclerView;
-    private static SwipeRefreshLayout swipeRefreshLayout;
-
+    private ArrayList<String> deleteList = new ArrayList<> ();
     private ActivityFragmentMaterialBinding fragmentIngredientBinding;
 
     private IngredientAdapter ingredientAdapter = new IngredientAdapter();
@@ -74,6 +78,12 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
         if (getArguments() != null) {
         }
 
+        // ProgressDialog 생성
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("내 재료를 가져오고 있어요!");
+        dialog.show();
+
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -90,7 +100,7 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
 
 //
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://2ea8-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -102,11 +112,14 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
             @Override
             public void onResponse(Call<List<Myingre>> call, Response<List<Myingre>> response) {
 
+                dialog.dismiss();
+
                 ingredientMaps.clear();
 
                 List<Myingre> resource = response.body();
 
                 ArrayList<String> ingredientList = new ArrayList<> ();
+
 
                 for(Myingre re : resource) {
                     ingredientList.add(re.myingre());
@@ -119,6 +132,7 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
                     ingredientHashMap.put("ingredient", oneIngredientText);
                     ingredientHashMap.put("date", "00/00/00");
                     ingredientMaps.add(ingredientHashMap);
+                    deleteList.add(oneIngredientText);
                 }
 
                 //adapter에 Map set
@@ -132,7 +146,6 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
 
                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
                 itemTouchHelper.attachToRecyclerView(ingredientRecyclerView);
-
 
 
             }
@@ -152,16 +165,6 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.activity_fragment_material, container, false);
 
-
-        //당겨서 새로고침
-//        swipeRefreshLayout = (SwipeRefreshLayout) fragmentIngredientBinding.refreshLayout;
-//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                swipeRefreshLayout.setRefreshing(false);
-//
-//            }
-//        });
 
         //플로팅 메뉴
         open = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.open);
@@ -194,7 +197,7 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
             public void onClick(View v) {
                 //
                 anim();
-                Intent intent = new Intent(getActivity(), GoogleLoginActivity.class);
+                Intent intent = new Intent(getActivity(), Addingre.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
             }
@@ -208,6 +211,8 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
         if (isFabOpen) {
             fab1.startAnimation(close);
             fab1.setClickable(false);
+            fab2.startAnimation(close);
+            fab2.setClickable(false);
             isFabOpen = false;
         } else {
             fab1.startAnimation(open);
@@ -221,8 +226,7 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
     @Override
     public void onStart() {
         super.onStart();
-
-
+        ingredientAdapter.setCalenderListener(this::calender);
 
     }
 
@@ -252,13 +256,56 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
 
 
     @Override
-    public boolean onItemMove(int from_position, int to_position) {
+    public boolean onItemMove(int from_position, int to_position)
+    {
         return false;
     }
 
     @Override
     public void onItemSwipe(int position) {
-        Toast.makeText(getContext(), "swipe"+position, Toast.LENGTH_SHORT).show();
+
+        HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
+        String ingredient = (String) ingredientHashMap.get("ingredient");
+
+        if(ingredient.contains("[")){
+            ingredient = ingredient.replaceAll("\\[", "");
+        }
+
+        if(ingredient.contains("]")){
+            ingredient = ingredient.replaceAll("\\]", "");
+        }
+
+        //여기서 ingredient가 삭제된 식재료 값
+        Toast.makeText(getContext(), ingredient+"를 삭제하였습니다.", Toast.LENGTH_SHORT).show();
+
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.build();
+
+        String inputid = "asdf";
+
+        DeleteingreApi deleteingreApi = retrofit.create(DeleteingreApi.class);
+        RequestBody userID = RequestBody.create(MediaType.parse("text.plain"), inputid);
+        RequestBody deleteingre = RequestBody.create(MediaType.parse("text.plain"), ingredient);
+
+        Call<List<Deleteingrepost>> call = deleteingreApi.Deleteingre(userID, deleteingre);
+
+        call.enqueue(new Callback<List<Deleteingrepost>>() {
+            @Override
+            public void onResponse(Call<List<Deleteingrepost>> call, Response<List<Deleteingrepost>> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Deleteingrepost>> call, Throwable t) {
+
+            }
+        });
+
+        Intent intent = new Intent(getActivity().getApplication(), NaviBar.class);
+        startActivity(intent);
+
     }
 
 }

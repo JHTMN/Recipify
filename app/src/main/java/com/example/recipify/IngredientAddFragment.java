@@ -91,13 +91,11 @@ public class IngredientAddFragment<bundle> extends Fragment {
             String inputid = "asdf";
             String inputingre = ingredientList.toString();
 
-
-
             System.out.println(ingredientList.toString());
 
             // Retrofit 객체 생성
             Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl("https://2ea8-203-230-13-2.jp.ngrok.io")
+                    .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
                     .addConverterFactory(GsonConverterFactory.create());
             Retrofit retrofit = builder.build();
 

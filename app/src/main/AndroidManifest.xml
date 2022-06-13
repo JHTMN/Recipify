@@ -20,6 +20,12 @@
         android:theme="@style/Theme.Recipify"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Deleteingre"
+            android:exported="false" />
+        <activity
+            android:name=".Addingre"
+            android:exported="false" />
+        <activity
             android:name=".IngreRecommend"
             android:exported="false" />
         <activity

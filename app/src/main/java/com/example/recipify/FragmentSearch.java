@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -42,13 +43,18 @@ public class FragmentSearch extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // ProgressDialog 생성
+        ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setMessage("모든 레시피 목록을\n가져오고 있습니다!");
+        dialog.show();
 /*
         final ListView listView = view.findViewById(R.id.listview);
         EditText editSearch = view.findViewById(R.id.editSearch);
 */
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://2ea8-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -60,6 +66,8 @@ public class FragmentSearch extends Fragment {
 
             @Override
             public void onResponse(Call<List<Search_Data>> call, Response<List<Search_Data>> response) {
+
+                dialog.dismiss();
 
                 List<Search_Data> resource= response.body();
 

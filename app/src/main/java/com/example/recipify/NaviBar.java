@@ -90,7 +90,7 @@ public class NaviBar extends AppCompatActivity {
         }
 
         if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
-            finish();
+            android.os.Process.killProcess(android.os.Process.myPid());
         }
     }
 }
