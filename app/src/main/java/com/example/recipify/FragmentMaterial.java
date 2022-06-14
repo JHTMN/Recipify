@@ -9,6 +9,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -51,7 +52,7 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
     private static FloatingActionButton fab, fab1, fab2;
     private static RecyclerView ingredientRecyclerView;
     private ArrayList<String> deleteList = new ArrayList<> ();
-    private ActivityFragmentMaterialBinding fragmentIngredientBinding;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private IngredientAdapter ingredientAdapter = new IngredientAdapter();
 
@@ -135,10 +136,13 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
                     deleteList.add(oneIngredientText);
                 }
 
+                ingredientAdapter.notifyDataSetChanged();
+
                 //adapter에 Map set
                 ingredientAdapter.setIngredientMaps(ingredientMaps);
                 //ingredientAdapter.setCalenderListener(this::calender);
 
+                ingredientAdapter.notifyDataSetChanged();
 
                 //recyclerView, Adapter
                 ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -173,6 +177,18 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
         fab1 = (FloatingActionButton) view.findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) view.findViewById(R.id.fab2);
         ingredientRecyclerView  = view.findViewById(R.id.ingredient_recycler_view);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentMaterial fragmentMaterial = new FragmentMaterial();
+                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+                ft.detach(fragmentMaterial).attach(fragmentMaterial).commit();
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
 
         fab.setOnClickListener(new Button.OnClickListener() {
@@ -190,6 +206,10 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
                 Intent intent = new Intent(getActivity(), GoogleLoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().remove(FragmentMaterial.this).commit();
+                FragmentMaterial.this.onDestroy();
             }
         });
         fab2.setOnClickListener(new Button.OnClickListener() {
@@ -200,6 +220,7 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
                 Intent intent = new Intent(getActivity(), Addingre.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
+
             }
         });
         return view;
@@ -267,6 +288,8 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
         HashMap<String, Object> ingredientHashMap = (HashMap<String,Object>)ingredientMaps.get(position);
         String ingredient = (String) ingredientHashMap.get("ingredient");
 
+//        ingredientAdapter.notifyItemRemoved(position);
+
         if(ingredient.contains("[")){
             ingredient = ingredient.replaceAll("\\[", "");
         }
@@ -303,8 +326,9 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
             }
         });
 
-        Intent intent = new Intent(getActivity().getApplication(), NaviBar.class);
-        startActivity(intent);
+//        Intent intent = new Intent(getActivity().getApplication(), NaviBar.class);
+//        startActivity(intent);
+
 
     }
 
