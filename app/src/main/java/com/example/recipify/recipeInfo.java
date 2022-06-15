@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -69,6 +70,7 @@ public class recipeInfo extends AppCompatActivity {
         TextView name04 = (TextView) findViewById(R.id.name4);
         TextView name05 = (TextView) findViewById(R.id.name5);
 
+        final ScrollView scrollView = findViewById(R.id.scroll_view);
         final ListView listView = findViewById(R.id.listview);
         iv = findViewById(R.id.imageView);
         iv1 = findViewById(R.id.url1);
@@ -78,7 +80,7 @@ public class recipeInfo extends AppCompatActivity {
         iv5 = findViewById(R.id.url5);
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://6197-61-34-253-244.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -153,9 +155,6 @@ public class recipeInfo extends AppCompatActivity {
                     System.out.println(name_1);
                     System.out.println(url_1);
 
-                    recom.setText("이런 레시피는 어때요?");
-                    num.setText("*조리순서");
-                    ingre.setText("*재료");
                     recipeName.setText(arrayN);
                     recipeIngre.setText(arrayIn);
                     name01.setText(name_1);
@@ -194,6 +193,14 @@ public class recipeInfo extends AppCompatActivity {
                     Glide.with(getApplicationContext()).load(imageStr4).into(iv4);
                     String imageStr5 = url_5;
                     Glide.with(getApplicationContext()).load(imageStr5).into(iv5);
+
+                    listView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View view, MotionEvent motionEvent) {
+                            scrollView.requestDisallowInterceptTouchEvent(true);
+                            return false;
+                        }
+                    });
 
             }
 

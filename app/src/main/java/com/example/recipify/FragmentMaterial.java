@@ -101,7 +101,7 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
 
 //
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://6197-61-34-253-244.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -182,9 +182,69 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FragmentMaterial fragmentMaterial = new FragmentMaterial();
-                FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-                ft.detach(fragmentMaterial).attach(fragmentMaterial).commit();
+
+                ingredientAdapter.ingredientMaps.clear();
+
+                Retrofit.Builder builder = new Retrofit.Builder()
+                        .baseUrl("https://6197-61-34-253-244.jp.ngrok.io")
+                        .addConverterFactory(GsonConverterFactory.create());
+                Retrofit retrofit = builder.build();
+
+                MyingreApi myingreApi = retrofit.create(MyingreApi.class);
+
+                Call<List<Myingre>> call = myingreApi.myingre();
+
+                call.enqueue(new Callback<List<Myingre>>() {
+                    @Override
+                    public void onResponse(Call<List<Myingre>> call, Response<List<Myingre>> response) {
+
+                        ingredientMaps.clear();
+
+                        List<Myingre> resource = response.body();
+
+                        ArrayList<String> ingredientList = new ArrayList<> ();
+
+
+                        for(Myingre re : resource) {
+                            ingredientList.add(re.myingre());
+                        }
+
+                        String[] ingredientList2 = ingredientList.toString().split(", ");
+
+                        for(String oneIngredientText: ingredientList2) {
+                            HashMap<String, Object> ingredientHashMap = new HashMap<>();
+                            ingredientHashMap.put("ingredient", oneIngredientText);
+                            ingredientHashMap.put("date", "00/00/00");
+                            ingredientMaps.add(ingredientHashMap);
+                            deleteList.add(oneIngredientText);
+                        }
+
+                        ingredientAdapter.notifyDataSetChanged();
+
+                        //adapter에 Map set
+                        ingredientAdapter.setIngredientMaps(ingredientMaps);
+                        //ingredientAdapter.setCalenderListener(this::calender);
+
+                        ingredientAdapter.notifyDataSetChanged();
+
+                        //recyclerView, Adapter
+                        ingredientRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                        ingredientRecyclerView.setAdapter(ingredientAdapter);
+
+                        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
+                        itemTouchHelper.attachToRecyclerView(ingredientRecyclerView);
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Myingre>> call, Throwable t) {
+
+                    }
+                });
+
+
+                ingredientAdapter.notifyDataSetChanged();
 
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -302,7 +362,7 @@ public class FragmentMaterial extends Fragment implements ItemTouchHelperListene
         Toast.makeText(getContext(), ingredient+"를 삭제하였습니다.", Toast.LENGTH_SHORT).show();
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://6197-61-34-253-244.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 

@@ -31,7 +31,9 @@ public class IngredientAddFragment<bundle> extends Fragment {
 
     private FragmentIngredientAddBinding fragmentIngredientAddBinding;
 
-    private IngredientAddAdapter ingredientAddAdapter = new IngredientAddAdapter();;
+    private IngredientAddAdapter ingredientAddAdapter = new IngredientAddAdapter();
+
+    String inputid = "asdf";
 
     private ArrayList<String> ingredientList;
 
@@ -50,10 +52,12 @@ public class IngredientAddFragment<bundle> extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
 
-
+//        if (getArguments() != null)
+//        {
+//            inputid = getArguments().getString("numid");
+//            System.out.println(inputid);
+//        }
 
     }
 
@@ -65,6 +69,8 @@ public class IngredientAddFragment<bundle> extends Fragment {
         fragmentIngredientAddBinding = FragmentIngredientAddBinding
                 .inflate(inflater, container, false);
         return fragmentIngredientAddBinding.getRoot();
+
+
 
     }
 
@@ -88,14 +94,14 @@ public class IngredientAddFragment<bundle> extends Fragment {
     private void onSaveBtn() {
         fragmentIngredientAddBinding.saveBtn.setOnClickListener(v -> {
 
-            String inputid = "asdf";
+            System.out.println(inputid);
             String inputingre = ingredientList.toString();
 
             System.out.println(ingredientList.toString());
 
             // Retrofit 객체 생성
             Retrofit.Builder builder = new Retrofit.Builder()
-                    .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
+                    .baseUrl("https://6197-61-34-253-244.jp.ngrok.io")
                     .addConverterFactory(GsonConverterFactory.create());
             Retrofit retrofit = builder.build();
 

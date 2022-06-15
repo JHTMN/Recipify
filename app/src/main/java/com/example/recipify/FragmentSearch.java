@@ -54,7 +54,7 @@ public class FragmentSearch extends Fragment {
 */
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://6197-61-34-253-244.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 

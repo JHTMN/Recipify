@@ -9,6 +9,7 @@
     tools:context=".recipeInfo">
 
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +22,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20px"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="#5F616A" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -29,32 +41,31 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15px"
-                android:textColor="#5F616A"
-                android:textSize="30sp" />
-
             <View
                 android:layout_margin="5dp"
                 android:background="#5F616A"
                 android:layout_width="match_parent"
                 android:layout_height="2px"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/ingre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:layout_marginStart="10dp"
+                android:drawableStart="@drawable/ic_baseline_menu_book_24"
+                android:text=" 재료"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="#5F616A"
+                />
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:textSize="20sp" />
+                android:layout_margin="15dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="#5F616A"
+                />
 
             <View
                 android:layout_margin="5dp"
@@ -66,13 +77,18 @@
                 android:id="@+id/num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:layout_marginStart="10dp"
+                android:drawableStart="@drawable/ic_baseline_menu_book_24"
+                android:text=" 조리순서"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="#5F616A" />
 
             <ListView
                 android:id="@+id/listview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
                 android:divider="#00000000" />
 
             <View
@@ -81,11 +97,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="2px"/>
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/recom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp" />
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="15dp"
+                android:text="이런 레시피는 어때요?"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="#5F616A"/>
 
             <HorizontalScrollView
                 android:layout_width="wrap_content"

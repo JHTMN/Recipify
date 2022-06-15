@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
-    private ArrayList<HashMap<String, Object>> ingredientMaps;
+    public ArrayList<HashMap<String, Object>> ingredientMaps;
 
     private CalenderListener calenderListener;
 

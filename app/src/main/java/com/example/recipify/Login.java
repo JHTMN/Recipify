@@ -2,6 +2,7 @@ package com.example.recipify;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,13 +24,13 @@ public class Login extends AppCompatActivity {
 
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         // Retrofit 객체 생성
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("https://5138-203-230-13-2.jp.ngrok.io")
+                .baseUrl("https://6197-61-34-253-244.jp.ngrok.io")
                 .addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.build();
 
@@ -75,10 +76,9 @@ public class Login extends AppCompatActivity {
 
                             IngredientAddFragment ingredientAddFragment = new IngredientAddFragment();
                             System.out.println(id.getText().toString());
-                            Bundle bundle = new Bundle(1);
+                            Bundle bundle = new Bundle();
                             bundle.putString("numid", id.getText().toString());
                             ingredientAddFragment.setArguments(bundle);
-
                             startActivity(intent);
 
                         }
